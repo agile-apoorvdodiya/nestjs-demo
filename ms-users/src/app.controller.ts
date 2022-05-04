@@ -11,6 +11,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @MessagePattern('user_get_all')
+  getAllUser() {
+    return this.appService.getAllUser();
+  }
+
   @MessagePattern('user_create')
   createUser(userData: any) {
     return this.appService.createUser(userData);

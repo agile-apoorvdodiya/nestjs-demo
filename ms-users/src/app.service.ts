@@ -9,6 +9,10 @@ export class AppService {
     return 'Hello World!';
   }
 
+  getAllUser() {
+    return this.userModel.find();
+  }
+
   async createUser(userData: any) {
     const newUser = await this.userModel.create([
       {

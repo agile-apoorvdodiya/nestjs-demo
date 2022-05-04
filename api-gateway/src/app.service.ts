@@ -8,6 +8,10 @@ export class AppService {
     return 'Hello World!';
   }
 
+  getAllUsers() {
+    return this.userServiceClient.send('user_get_all', {});
+  }
+
   createUser(userData: any) {
     return this.userServiceClient.send('user_create', userData);
   }
