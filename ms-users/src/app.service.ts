@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 
 @Injectable()
@@ -11,6 +11,16 @@ export class AppService {
 
   getAllUser() {
     return this.userModel.find();
+  }
+
+  async getUserById(id: string) {
+    console.log(2342345);
+
+    const user = await this.userModel.findOne({
+      _id: id,
+    });
+
+    return user;
   }
 
   async createUser(userData: any) {

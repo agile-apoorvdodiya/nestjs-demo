@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Req } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
 
@@ -9,6 +9,19 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @MessagePattern('user_get_by_id')
+  async getUserById(id: any) {
+    const user = await this.appService.getUserById(id);
+    if (!user) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        error: 'User not found',
+        message: 'User does not exist!',
+      };
+    }
+    return user;
   }
 
   @MessagePattern('user_get_all')
