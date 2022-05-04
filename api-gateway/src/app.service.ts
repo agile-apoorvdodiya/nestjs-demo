@@ -1,58 +1,54 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Model, ObjectId } from 'mongoose';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject('USER_SERVICE') private userServiceClient: ClientProxy) {}
+  constructor(@Inject('UserModel') private userModel: Model<any>) {}
+
   getHello(): string {
     return 'Hello World!';
   }
 
-  async deleteUserById(id: string) {
-    const response = await firstValueFrom(
-      this.userServiceClient.send('user_delete_by_id', id),
-    );
-    return this.getFormattedResponse(response);
-  }
-
-  async updateUserById(id: string, data: any) {
-    const response = await firstValueFrom(
-      this.userServiceClient.send('user_update_by_id', { id, ...data }),
-    );
-    return this.getFormattedResponse(response);
+  getAllUser() {
+    return this.userModel.find();
   }
 
   async getUserById(id: string) {
-    const response = await firstValueFrom(
-      this.userServiceClient.send('user_get_by_id', id),
-    );
-    return this.getFormattedResponse(response);
+    
+    const user = await this.userModel.findOne({
+      _id: id,
+    });
+
+    console.log(user);
+    
+
+    return user;
   }
 
-  async getAllUsers() {
-    const response = await firstValueFrom(
-      this.userServiceClient.send('user_get_all', {}),
+  updateUserById(data: any) {
+    return this.userModel.findOneAndUpdate(
+      {
+        _id: data?.id,
+      },
+      data,
+      { new: true },
     );
-    return this.getFormattedResponse(response);
+  }
+
+  deleteUserById(id: string) {
+    return this.userModel.deleteOne({
+      _id: id,
+    });
   }
 
   async createUser(userData: any) {
-    const response = await firstValueFrom(
-      this.userServiceClient.send('user_create', userData),
-    );
-    return this.getFormattedResponse(response);
-  }
-
-  getFormattedResponse(response: any) {
-    if (response?.error) {
-      throw new HttpException(
-        {
-          ...response,
-        },
-        response.status || 500,
-      );
-    }
-    return response;
+    const newUser = await this.userModel.create([
+      {
+        name: userData.name,
+        contact: userData.contact,
+        email: userData.email,
+      },
+    ]);
+    return newUser;
   }
 }

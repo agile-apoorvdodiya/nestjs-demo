@@ -1,20 +1,26 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ClientsModule } from "@nestjs/microservices";
+import mongoose from 'mongoose';
+import { UserSchema } from './schema/user';
 
 @Module({
-  imports: [
-    ClientsModule.register([
-      {
-        name: 'USER_SERVICE',
-        options: {
-          port: 3001
-        }
-      }
-    ])
-  ],
+  imports: [],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'DB_CONNECTION',
+      useFactory: () => {
+        return mongoose.connect('mongodb://localhost:27017/nestjs');
+      },
+    },
+    {
+      provide: 'UserModel',
+      useFactory: (connection: mongoose.Connection) =>
+        connection.model('UserModel', UserSchema),
+      inject: ['DB_CONNECTION'],
+    },
+  ],
 })
 export class AppModule {}

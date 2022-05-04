@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -20,27 +21,84 @@ export class AppController {
   }
 
   @Delete('users/:id')
-  deleteUserById(@Param() param: any) {
-    return this.appService.deleteUserById(param['id']);
+  async deleteUserById(@Param() param: any) {
+    const deletedUser = await this.appService.deleteUserById(param['id']);
+
+    if (deletedUser.deletedCount === 0) {
+      return {
+        status: 404,
+        error: 'user not found',
+        message: 'User does not exist',
+        success: false,
+      };
+    }
+
+    return {
+      success: true,
+      message: 'User deleted successfully',
+    };
   }
 
   @Put('users/:id')
-  updateUser(@Param() param: any, @Body() userData: any) {
-    return this.appService.updateUserById(param['id'], userData);
+  async updateUserById(@Param() Param: any, @Body() data: any) {
+    const editedUser = await this.appService.updateUserById({
+      id: Param['id'],
+      ...data,
+    });
+
+    if (!editedUser || editedUser?.upsertedCount === 0) {
+      return {
+        status: 404,
+        error: 'User not found',
+        message: 'User does not exist',
+        success: false,
+      };
+    }
+
+    return {
+      success: true,
+      message: 'user updated successfully',
+      user: editedUser,
+    };
   }
 
   @Get('users/:id')
-  getUserById(@Param() param: any) {
-    return this.appService.getUserById(param['id']);
+  async getUserById(@Param() param: any) {
+    const user = await this.appService.getUserById(param['id']);
+
+    if (!user) {
+      return {
+        status: HttpStatus.NOT_FOUND,
+        error: 'User not found',
+        message: 'User does not exist!',
+        success: false,
+      };
+    }
+    return {
+      success: true,
+      user,
+    };
   }
 
   @Get('users')
-  getAllUser() {
-    return this.appService.getAllUsers();
+  async getAllUser() {
+    const users = await this.appService.getAllUser();
+    return {
+      success: true,
+      users,
+    };
   }
 
   @Post('users')
-  createUser(@Body() userData: any) {
-    return this.appService.createUser(userData);
+  async createUser(userData: any) {
+    if (!userData || !userData.name || !userData.email || !userData.contact) {
+      return {};
+    }
+    const user = await this.appService.createUser(userData);
+    return {
+      success: true,
+      message: 'user created successfully',
+      user,
+    };
   }
 }
