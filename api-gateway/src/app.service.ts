@@ -19,9 +19,6 @@ export class AppService {
       _id: id,
     });
 
-    console.log(user);
-    
-
     return user;
   }
 
