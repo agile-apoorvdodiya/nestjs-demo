@@ -15,17 +15,20 @@ export class AppController {
   async updateUserById(data: any) {
     const editedUser = await this.appService.updateUserById(data);
 
-    console.log(editedUser);
-
-    if (editedUser.upsertedCount === 0) {
+    if (!editedUser || editedUser?.upsertedCount === 0) {
       return {
         status: 404,
         error: 'User not found',
         message: 'User does not exist',
+        success: false,
       };
     }
 
-    return editedUser;
+    return {
+      success: true,
+      message: 'user updated successfully',
+      user: editedUser,
+    };
   }
 
   @MessagePattern('user_delete_by_id')
@@ -35,12 +38,16 @@ export class AppController {
     if (deletedUser.deletedCount === 0) {
       return {
         status: 404,
-        error: 'User not found',
+        error: 'user not found',
         message: 'User does not exist',
+        success: false,
       };
     }
 
-    return deletedUser;
+    return {
+      success: true,
+      message: 'User deleted successfully',
+    };
   }
 
   @MessagePattern('user_get_by_id')
@@ -51,18 +58,34 @@ export class AppController {
         status: HttpStatus.NOT_FOUND,
         error: 'User not found',
         message: 'User does not exist!',
+        success: false,
       };
     }
-    return user;
+    return {
+      success: true,
+      user,
+    };
   }
 
   @MessagePattern('user_get_all')
-  getAllUser() {
-    return this.appService.getAllUser();
+  async getAllUser() {
+    const users = await this.appService.getAllUser();
+    return {
+      success: true,
+      users,
+    };
   }
 
   @MessagePattern('user_create')
-  createUser(userData: any) {
-    return this.appService.createUser(userData);
+  async createUser(userData: any) {
+    if (!userData || !userData.name || !userData.email || !userData.contact) {
+      return {};
+    }
+    const user = await this.appService.createUser(userData);
+    return {
+      success: true,
+      message: 'user created successfully',
+      user,
+    };
   }
 }
