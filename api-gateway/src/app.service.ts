@@ -24,6 +24,21 @@ export class AppService {
     return response;
   }
 
+  async updateUserById(id: string, data: any) {
+    const response = await firstValueFrom(
+      this.userServiceClient.send('user_update_by_id', { id, ...data }),
+    );
+    if (response?.error) {
+      throw new HttpException(
+        {
+          ...response,
+        },
+        response.status || 500,
+      );
+    }
+    return response;
+  }
+
   async getUserById(id: string) {
     const response = await firstValueFrom(
       this.userServiceClient.send('user_get_by_id', id),

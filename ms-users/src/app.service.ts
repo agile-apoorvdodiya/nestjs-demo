@@ -23,6 +23,16 @@ export class AppService {
     return user;
   }
 
+  updateUserById(data: any) {
+    return this.userModel.findOneAndUpdate(
+      {
+        _id: data?.id,
+      },
+      data,
+      { new: true },
+    );
+  }
+
   deleteUserById(id: string) {
     return this.userModel.deleteOne({
       _id: id,
