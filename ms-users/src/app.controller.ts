@@ -11,6 +11,21 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @MessagePattern('user_delete_by_id')
+  async deleteUserById(id: any) {
+    const deletedUser = await this.appService.deleteUserById(id);
+
+    if (deletedUser.deletedCount === 0) {
+      return {
+        status: 404,
+        error: 'User not found',
+        message: 'User does not exist',
+      };
+    }
+
+    return deletedUser;
+  }
+
   @MessagePattern('user_get_by_id')
   async getUserById(id: any) {
     const user = await this.appService.getUserById(id);

@@ -9,6 +9,21 @@ export class AppService {
     return 'Hello World!';
   }
 
+  async deleteUserById(id: string) {
+    const response = await firstValueFrom(
+      this.userServiceClient.send('user_delete_by_id', id),
+    );
+    if (response?.error) {
+      throw new HttpException(
+        {
+          ...response,
+        },
+        response.status || 500,
+      );
+    }
+    return response;
+  }
+
   async getUserById(id: string) {
     const response = await firstValueFrom(
       this.userServiceClient.send('user_get_by_id', id),

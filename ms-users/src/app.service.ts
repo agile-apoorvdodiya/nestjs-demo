@@ -23,6 +23,12 @@ export class AppService {
     return user;
   }
 
+  deleteUserById(id: string) {
+    return this.userModel.deleteOne({
+      _id: id,
+    });
+  }
+
   async createUser(userData: any) {
     const newUser = await this.userModel.create([
       {
