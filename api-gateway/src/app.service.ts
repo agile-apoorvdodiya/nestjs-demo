@@ -42,14 +42,7 @@ export class AppService {
   }
 
   async createUser(userData: any) {
-    const newUser = await this.userModel.create([
-      {
-        name: userData.name,
-        contact: userData.contact,
-        email: userData.email,
-        admin: userData.admin,
-      },
-    ]);
+    const newUser = await this.userModel.create([userData]);
     return newUser;
   }
 

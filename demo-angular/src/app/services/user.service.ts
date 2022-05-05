@@ -21,7 +21,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {
     const user = JSON.parse(localStorage.getItem('u') || '{}');
-    if (user?._id) {
+    if (user?.token) {
       this.isLoggedIn.next(true);
     }
   }

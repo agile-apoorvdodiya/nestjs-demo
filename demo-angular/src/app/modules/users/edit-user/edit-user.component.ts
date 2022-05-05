@@ -31,6 +31,7 @@ export class EditUserComponent implements OnInit {
   createUserForm() {
     this.userForm = this.fb.group({
       email: ['', Validators.required],
+      password: ['', Validators.required],
       contact: ['', Validators.required],
       name: ['', Validators.required],
       admin: [false],
