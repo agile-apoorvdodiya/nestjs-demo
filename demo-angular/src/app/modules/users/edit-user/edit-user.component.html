@@ -1,0 +1,69 @@
+<div class="container">
+  <h1>Edit User</h1>
+  <form [formGroup]="userForm">
+    <div class="table-container">
+      <table>
+        <tr>
+          <td>
+            <label for="in-name">Name</label>
+          </td>
+          <td>
+            <input
+              type="text"
+              name="name"
+              id="in-name"
+              formControlName="name"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="in-email">Email</label>
+          </td>
+          <td>
+            <input
+              type="email"
+              name="email"
+              id="in-email"
+              formControlName="email"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="in-contact">Contact</label>
+          </td>
+          <td>
+            <input
+              type="tel"
+              name="contact"
+              id="in-contact"
+              formControlName="contact"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              type="checkbox"
+              name="admin"
+              id="in-admin"
+              formControlName="admin"
+            />
+          </td>
+          <td>
+            <label for="in-admin">Make admin</label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button (click)="saveHandler()">Save</button>
+          </td>
+          <td>
+            <button routerLink="/users">Cancel</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </form>
+</div>

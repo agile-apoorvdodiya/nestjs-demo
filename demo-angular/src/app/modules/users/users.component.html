@@ -1,0 +1,25 @@
+<div class="container">
+  <h1>Users <a routerLink="/users/create">Create</a></h1>
+  <div class="table-container" *ngIf="users.length">
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Contact</th>
+        <th>Email</th>
+        <th>Is Admin</th>
+        <th>Action</th>
+      </tr>
+      <tr *ngFor="let user of users">
+        <td>{{ user.name }}</td>
+        <td>{{ user.contact }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.admin ? "Yes" : "No" }}</td>
+        <td>
+          <a (click)="deleteHandler(user?._id || '')"> Delete </a>
+          <a [routerLink]="['/users', user._id]"> Edit </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div *ngIf="!users.length">No users found</div>
+</div>
