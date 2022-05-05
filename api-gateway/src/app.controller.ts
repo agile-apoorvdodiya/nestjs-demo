@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   HttpStatus,
   Param,
   Post,
@@ -25,12 +26,15 @@ export class AppController {
     const deletedUser = await this.appService.deleteUserById(param['id']);
 
     if (deletedUser.deletedCount === 0) {
-      return {
-        status: 404,
-        error: 'user not found',
-        message: 'User does not exist',
-        success: false,
-      };
+      throw new HttpException(
+        {
+          status: 404,
+          error: 'user not found',
+          message: 'User does not exist',
+          success: false,
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     return {
@@ -47,12 +51,15 @@ export class AppController {
     });
 
     if (!editedUser || editedUser?.upsertedCount === 0) {
-      return {
-        status: 404,
-        error: 'User not found',
-        message: 'User does not exist',
-        success: false,
-      };
+      throw new HttpException(
+        {
+          status: 404,
+          error: 'user not found',
+          message: 'User does not exist',
+          success: false,
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
 
     return {
@@ -67,12 +74,15 @@ export class AppController {
     const user = await this.appService.getUserById(param['id']);
 
     if (!user) {
-      return {
-        status: HttpStatus.NOT_FOUND,
-        error: 'User not found',
-        message: 'User does not exist!',
-        success: false,
-      };
+      throw new HttpException(
+        {
+          status: 404,
+          error: 'user not found',
+          message: 'User does not exist',
+          success: false,
+        },
+        HttpStatus.NOT_FOUND,
+      );
     }
     return {
       success: true,
@@ -90,11 +100,52 @@ export class AppController {
   }
 
   @Post('users')
-  async createUser(userData: any) {
+  async createUser(@Body() userData: any) {
     if (!userData || !userData.name || !userData.email || !userData.contact) {
-      return {};
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          success: false,
+          error: 'Insufficient Data',
+          message: 'Insufficient Data',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
     const user = await this.appService.createUser(userData);
+    return {
+      success: true,
+      message: 'user created successfully',
+      user,
+    };
+  }
+
+  @Post('users/login')
+  async loginUser(@Body() userData: any) {
+    if (!userData || !userData.email || !userData.password) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          success: false,
+          error: 'Insufficient Data',
+          message: 'Insufficient Data',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const user = await this.appService.login(userData);
+    if (!user) {
+      throw new HttpException(
+        {
+          status: HttpStatus.UNAUTHORIZED,
+          success: false,
+          error: 'Invalid user credentials',
+          message: 'Invalid user credentials',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
     return {
       success: true,
       message: 'user created successfully',

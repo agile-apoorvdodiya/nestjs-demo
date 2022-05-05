@@ -14,7 +14,6 @@ export class AppService {
   }
 
   async getUserById(id: string) {
-    
     const user = await this.userModel.findOne({
       _id: id,
     });
@@ -44,8 +43,17 @@ export class AppService {
         name: userData.name,
         contact: userData.contact,
         email: userData.email,
+        admin: userData.admin,
       },
     ]);
     return newUser;
+  }
+
+  async login(userData: any) {
+    const user = await this.userModel.findOne({
+      email: userData.email,
+      password: userData.password,
+    });
+    return user;
   }
 }

@@ -8,12 +8,13 @@ module.exports = {
           admin: true,
           password: "admin",
           contact: "",
-          email: "",
+          email: "admin@nowhere.com",
         },
       },
       { upsert: true }
     );
   },
   async down(db, client) {
+    return db.collection("users").deleteMany({});
   },
 };
