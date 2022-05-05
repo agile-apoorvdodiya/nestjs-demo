@@ -9,18 +9,22 @@ import {
   Post,
   Put,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { AppService } from './app.service';
+import { JwtAuthGuard } from './guards/auth.guard';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   getHello(): string {
     return this.appService.getHello();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete('users/:id')
   async deleteUserById(@Param() param: any) {
     const deletedUser = await this.appService.deleteUserById(param['id']);
@@ -43,6 +47,7 @@ export class AppController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put('users/:id')
   async updateUserById(@Param() Param: any, @Body() data: any) {
     const editedUser = await this.appService.updateUserById({
@@ -69,6 +74,7 @@ export class AppController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('users/:id')
   async getUserById(@Param() param: any) {
     const user = await this.appService.getUserById(param['id']);
@@ -90,6 +96,7 @@ export class AppController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('users')
   async getAllUser() {
     const users = await this.appService.getAllUser();
@@ -99,6 +106,7 @@ export class AppController {
     };
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('users')
   async createUser(@Body() userData: any) {
     if (!userData || !userData.name || !userData.email || !userData.contact) {

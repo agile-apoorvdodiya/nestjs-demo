@@ -3,11 +3,21 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import mongoose from 'mongoose';
 import { UserSchema } from './schema/user';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
-  imports: [],
+  imports: [
+    PassportModule,
+    JwtModule.register({
+      secret: 'secret from env',
+      signOptions: { expiresIn: '600s' },
+    }),
+  ],
   controllers: [AppController],
   providers: [
+    JwtStrategy,
     AppService,
     {
       provide: 'DB_CONNECTION',

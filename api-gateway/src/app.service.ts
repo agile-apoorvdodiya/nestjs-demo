@@ -1,9 +1,13 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Model, ObjectId } from 'mongoose';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject('UserModel') private userModel: Model<any>) {}
+  constructor(
+    @Inject('UserModel') private userModel: Model<any>,
+    private jwtService: JwtService,
+  ) {}
 
   getHello(): string {
     return 'Hello World!';
@@ -50,10 +54,20 @@ export class AppService {
   }
 
   async login(userData: any) {
-    const user = await this.userModel.findOne({
-      email: userData.email,
-      password: userData.password,
-    });
-    return user;
+    const user = await this.userModel
+      .findOne({
+        email: userData.email,
+        password: userData.password,
+      })
+      .lean();
+    return user
+      ? {
+          token: this.jwtService.sign({
+            id: user._id,
+            email: user.email,
+            admin: user.admin,
+          }),
+        }
+      : null;
   }
 }
