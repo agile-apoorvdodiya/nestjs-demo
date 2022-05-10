@@ -6,6 +6,7 @@ export const UserSchema = new Schema(
     admin: {
       default: false,
     },
+    document: 'string',
     contact: String,
     email: String,
     password: String,
