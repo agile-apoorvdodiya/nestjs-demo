@@ -18,6 +18,7 @@ export interface IUser {
 export class UserService {
   isLoggedIn = new BehaviorSubject(false);
   private readonly baseUrl: string = `${environment.apiUrl}/users`;
+  private readonly uploadBaseUrl: string = `${environment.uploadAPIUrl}/users`;
 
   constructor(private http: HttpClient) {
     const user = JSON.parse(localStorage.getItem('u') || '{}');
@@ -59,5 +60,12 @@ export class UserService {
 
   getUserById(id: string) {
     return this.http.get(`${this.baseUrl}/${id}`);
+  }
+
+  uploadUserDoc(id: string, data: any) {
+    return this.http.post(`${this.uploadBaseUrl}/upload/${id}`, data, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 }

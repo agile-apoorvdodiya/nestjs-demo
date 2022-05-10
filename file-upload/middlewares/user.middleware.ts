@@ -25,7 +25,7 @@ export class UserMiddleware implements NestMiddleware {
 
     try {
       const response = await firstValueFrom(
-        this.http.get(`http://localhost:3000/users/${req.params['id']}`, {
+        this.http.get(`${process.env.USER_SERVICE_URL}/users/${req.params['id']}`, {
           headers: {
             authorization: req.headers['authorization'],
           },

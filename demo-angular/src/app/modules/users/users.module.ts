@@ -5,9 +5,10 @@ import { UsersRoutingModule } from './users-routing.module';
 import { UsersComponent } from './users.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
-  declarations: [UsersComponent, EditUserComponent],
+  declarations: [UsersComponent, EditUserComponent, UploadComponent],
   imports: [CommonModule, ReactiveFormsModule, UsersRoutingModule],
 })
 export class UsersModule {}

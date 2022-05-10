@@ -11,7 +11,7 @@ export class AppService {
     if (file && userId) {
       response = await firstValueFrom(
         this.httpService.put(
-          `http://localhost:3000/users/${userId}`,
+          `${process.env.USER_SERVICE_URL}/users/${userId}`,
           {
             document: file.filename,
           },

@@ -4,9 +4,10 @@ import { MulterModule } from '@nestjs/platform-express';
 import { UserMiddleware } from 'middlewares/user.middleware';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     HttpModule,
     MulterModule.register({
       dest: 'uploads',

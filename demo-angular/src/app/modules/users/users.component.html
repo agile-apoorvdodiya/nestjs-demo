@@ -15,6 +15,7 @@
         <td>{{ user.email }}</td>
         <td>{{ user.admin ? "Yes" : "No" }}</td>
         <td>
+          <a (click)="uploadUserHandler(user?._id || '')"> Upload Document </a>
           <a (click)="deleteHandler(user?._id || '')"> Delete </a>
           <a [routerLink]="['/users', user._id]"> Edit </a>
         </td>

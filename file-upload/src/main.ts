@@ -7,7 +7,7 @@ async function bootstrap() {
   const config = new DocumentBuilder().setTitle('File upload').build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('', app, document);
-  
+  app.enableCors();
   await app.listen(3001);
 }
 bootstrap();

@@ -41,4 +41,8 @@ export class UsersComponent implements OnInit {
   editUserHandler(id: string) {
     this.router.navigate(['/users', id]);
   }
+  
+  uploadUserHandler(id: string) {
+    this.router.navigate(['/users/upload', id]);
+  }
 }

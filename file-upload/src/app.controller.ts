@@ -27,7 +27,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @UseInterceptors(FileInterceptor('file', storageOptions))
-  @Post('upload/:id')
+  @Post('users/upload/:id')
   async uploadUserDocument(@UploadedFile() file: any, @Req() req: any) {
     const response = await this.appService.saveDocumentDetails(
       req.params['id'],

@@ -1,0 +1,25 @@
+<div class="container">
+  <h1>Upload User Document</h1>
+  <div class="progress-bar-container" *ngIf="inprogress">
+    <div class="progress-bar" [style.width.%]="progress"></div>
+  </div>
+  <div class="table-container">
+    <table>
+      <tr>
+        <td>
+          <input
+            type="file"
+            name="file-upload"
+            id="file-upload"
+            (change)="handleFile($event)"
+          />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <button (click)="submit()">Submit</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
