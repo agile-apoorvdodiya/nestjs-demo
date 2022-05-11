@@ -11,21 +11,29 @@
           id="in-email"
           formControlName="email"
         />
+        <small *ngIf="getFormControlError(loginForm.controls['email'])" class="d-block fst-italic text-danger">
+          Please enter email
+        </small>
       </div>
       <div class="mt-2">
         <div class="">
           <label for="in-email" class="form-label">Password</label>
           <input
-          class="form-control"
+            class="form-control"
             type="password"
             name="password"
             id="in-password"
             formControlName="password"
           />
+          <small *ngIf="getFormControlError(loginForm?.controls['password'])" class="d-block fst-italic text-danger">
+            Please enter email
+          </small>
         </div>
       </div>
       <div class="pt-3">
-        <button class="btn btn-sm btn-primary" type="button" (click)="login()">Login</button>
+        <button class="btn btn-sm btn-primary" type="button" (click)="login()">
+          Login
+        </button>
       </div>
     </div>
   </div>

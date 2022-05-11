@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -9,12 +10,15 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginForm;
+  loginForm: any;
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService
   ) {
+    if (userService.isLoggedIn) {
+      history.back();
+    }
     this.loginForm = fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required],
@@ -23,21 +27,34 @@ export class LoginComponent implements OnInit {
 
   login() {
     if (this.loginForm.invalid) {
-      return alert('Please enter correct user details');
+      return this.loginForm.markAllAsTouched();
     }
     let data = this.loginForm.value;
     this.userService.login(data).subscribe(
       (res: any) => {
         if (res?.success) {
-          alert('Login success');
-          this.router.navigateByUrl('/users');
+          Swal.fire({
+            timer: 1000,
+            icon: 'success',
+            title: 'Successfully logged in!',
+          }).then((res) => {
+            this.router.navigateByUrl('/users');
+          });
         }
       },
       (err) => {
-        alert(err.error.message + '\n Try again with correct user details');
+        Swal.fire({
+          icon: 'error',
+          title: err.error?.message || 'Something went wrong!',
+          text: 'Try again with correct user details',
+        });
       }
     );
   }
 
   ngOnInit(): void {}
+
+  getFormControlError(control: FormGroup) {
+    return control?.touched && control?.errors && control?.errors['required'];
+  }
 }

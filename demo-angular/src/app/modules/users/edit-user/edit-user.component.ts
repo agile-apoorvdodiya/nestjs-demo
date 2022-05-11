@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IUser, UserService } from 'src/app/services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-user',
@@ -29,9 +35,22 @@ export class EditUserComponent implements OnInit {
 
   createUserForm() {
     this.userForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      contact: ['', Validators.required],
+      email: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/),
+        ],
+      ],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      contact: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(10),
+        ],
+      ],
       name: ['', Validators.required],
       admin: [false],
     });
@@ -49,21 +68,35 @@ export class EditUserComponent implements OnInit {
 
   saveHandler() {
     if (this.userForm.invalid) {
-      return alert('Enter all the details');
+      return this.userForm.markAllAsTouched();
     }
     (this.userId
       ? this.userService.updateUser(this.userId, this.userForm.value)
       : this.userService.createUser(this.userForm.value)
     ).subscribe(
       (res: any) => {
-        alert(res?.message);
-        history.back();
+        Swal.fire({
+          icon: 'success',
+          title: res?.message || 'Success',
+        }).then((res) => {
+          history.back();
+        });
       },
-      (err) => {}
+      (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: err?.error?.message || 'Something went wrong',
+          text: 'Please try again',
+        });
+      }
     );
   }
 
   onCancel() {
     history.back();
+  }
+
+  getFormControlError(control: FormControl, validation: string = 'required') {
+    return control?.errors && control.touched && control.errors[validation];
   }
 }

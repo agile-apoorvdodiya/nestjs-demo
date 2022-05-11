@@ -9,7 +9,10 @@ export const UserSchema = new Schema(
     },
     document: 'string',
     contact: String,
-    email: String,
+    email: {
+      type: String,
+      unique: true,
+    },
     password: String,
   },
   {
