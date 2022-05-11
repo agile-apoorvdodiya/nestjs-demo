@@ -1,32 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
-
-* {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-
-  &.form-inline {
-    flex-direction: row;
-    label {
-      margin-right: 10px;
-    }
-  }
-}
-
 .container {
   height: 90vh;
 }
 
-.table-container {
-  table {
-    tr, th {
-      td {
-        padding: 4px 7px;
-      }
-    }
-  }
-}
+// .table-container {
+//   table {
+//     tr, th {
+//       td {
+//         padding: 4px 7px;
+//       }
+//     }
+//   }
+// }

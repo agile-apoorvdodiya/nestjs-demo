@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 export interface IUser {
   _id?: string;
   email?: string;
+  document?: string;
   name?: string;
   password?: string;
   contact?: string;

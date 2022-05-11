@@ -5,6 +5,7 @@ export const UserSchema = new Schema(
     name: String,
     admin: {
       default: false,
+      type: Boolean,
     },
     document: 'string',
     contact: String,

@@ -1,13 +1,13 @@
 <div class="container">
-  <h1>Edit User</h1>
+  <div class="display-4">Edit User</div>
   <form [formGroup]="userForm">
     <div class="table-container">
       <table>
         <tr>
-          <td>
+          <td class="px-3 py-2">
             <label for="in-name">Name</label>
           </td>
-          <td>
+          <td class="px-3 py-2">
             <input
               type="text"
               name="name"
@@ -17,10 +17,10 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="px-3 py-2">
             <label for="in-email">Email</label>
           </td>
-          <td>
+          <td class="px-3 py-2">
             <input
               type="email"
               name="email"
@@ -30,10 +30,10 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="px-3 py-2">
             <label for="in-password">Password</label>
           </td>
-          <td>
+          <td class="px-3 py-2">
             <input
               type="password"
               name="password"
@@ -43,10 +43,10 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="px-3 py-2">
             <label for="in-contact">Contact</label>
           </td>
-          <td>
+          <td class="px-3 py-2">
             <input
               type="tel"
               name="contact"
@@ -56,7 +56,10 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td class="px-3 py-2">
+            <label for="in-admin">Make admin</label>
+          </td>
+          <td class="px-3 py-2">
             <input
               type="checkbox"
               name="admin"
@@ -64,16 +67,11 @@
               formControlName="admin"
             />
           </td>
-          <td>
-            <label for="in-admin">Make admin</label>
-          </td>
         </tr>
         <tr>
-          <td>
-            <button (click)="saveHandler()">Save</button>
-          </td>
-          <td>
-            <button routerLink="/users">Cancel</button>
+          <td class="px-3 py-2">
+            <button class="btn btn-sm btn-primary me-2" (click)="saveHandler()">Save</button>
+            <button class="btn btn-sm btn-danger" (click)="onCancel()">Cancel</button>
           </td>
         </tr>
       </table>

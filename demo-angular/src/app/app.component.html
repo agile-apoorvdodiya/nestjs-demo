@@ -1,5 +1,5 @@
-<nav>
+<nav class="navbar navbar-light p-3 shadow">
   <div></div>
-  <button *ngIf="isLoggedIn" (click)="onLogout()">Logout</button>
+  <button class="btn btn-sm btn-outline-primary" *ngIf="isLoggedIn" (click)="onLogout()">Logout</button>
 </nav>
 <router-outlet></router-outlet>

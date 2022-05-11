@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IUser, UserService } from 'src/app/services/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-users',
@@ -9,7 +10,9 @@ import { IUser, UserService } from 'src/app/services/user.service';
 })
 export class UsersComponent implements OnInit {
   users: IUser[] = [];
+  uploadURL = environment.uploadAPIUrl;
   constructor(private userService: UserService, private router: Router) {}
+   
 
   ngOnInit(): void {
     this.getAllUsers();

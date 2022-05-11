@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { IUser, UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -16,11 +16,10 @@ export class EditUserComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
-    private router: Router,
     private fb: FormBuilder
   ) {
     this.createUserForm();
-    
+
     activatedRoute.params.subscribe((params: any) => {
       params['id'] === 'create' ? '' : this.getUserDetails(params['id']);
     });
@@ -49,8 +48,8 @@ export class EditUserComponent implements OnInit {
   }
 
   saveHandler() {
-    if (this.userForm.OnInit) {
-      alert('Enter all the details');
+    if (this.userForm.invalid) {
+      return alert('Enter all the details');
     }
     (this.userId
       ? this.userService.updateUser(this.userId, this.userForm.value)
@@ -58,9 +57,13 @@ export class EditUserComponent implements OnInit {
     ).subscribe(
       (res: any) => {
         alert(res?.message);
-        this.router.navigateByUrl('/users');
+        history.back();
       },
       (err) => {}
     );
+  }
+
+  onCancel() {
+    history.back();
   }
 }

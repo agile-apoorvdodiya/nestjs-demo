@@ -38,11 +38,10 @@ export class UploadComponent implements OnInit {
           this.progress = (res.loaded / res.total) * 100;
         } else if (res.type === 4) {
           alert('File uploaded successfully');
+          history.back();
           this.file = null;
           this.progress = 0;
           this.inprogress = false;
-          console.log(this.progress, this.inprogress);
-          console.log(this.file);
         }
       });
   }
