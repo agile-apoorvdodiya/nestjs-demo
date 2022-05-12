@@ -15,6 +15,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'form-builder',
+    loadChildren: () =>
+      import('./modules/form-builder/form-builder.module').then(
+        (m) => m.FormBuilderModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: '**',
     redirectTo: '/login',
   },

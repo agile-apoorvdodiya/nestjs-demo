@@ -1,5 +1,20 @@
 <nav class="navbar navbar-light p-3 shadow">
-  <div></div>
-  <button class="btn btn-sm btn-outline-primary" *ngIf="isLoggedIn" (click)="onLogout()">Logout</button>
+  <div>
+    <ng-container *ngIf="isLoggedIn">
+      <div class="d-flex">
+        <button class="btn btn-sm" routerLink="/users">Users</button>
+        <button class="btn btn-sm" routerLink="/form-builder">
+          Form Builder
+        </button>
+      </div>
+    </ng-container>
+  </div>
+  <button
+    class="btn btn-sm btn-outline-primary"
+    *ngIf="isLoggedIn"
+    (click)="onLogout()"
+  >
+    Logout
+  </button>
 </nav>
 <router-outlet></router-outlet>

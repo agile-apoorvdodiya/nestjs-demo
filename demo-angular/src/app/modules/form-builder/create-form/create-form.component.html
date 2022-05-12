@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row" cdkDropListGroup>
+    <div class="col-6 mt-4">
+      <div class="display-4">Controls</div>
+      <div class="controls-container" cdkDropList [cdkDropListData]="controls" class="drop-list"
+        (cdkDropListDropped)="move($event)">
+        <div class="list-item" *ngFor="let item of controls" cdkDrag>
+          <div class="control-container" *ngIf="!['checkbox', 'radio'].includes(item.type)">
+            <div class="type-label">
+              <label class="form-label" for="">{{ item.labelView }}</label>
+            </div>
+            <div class="control-editor">
+              <input class="" [type]="item.type" />
+            </div>
+          </div>
+          <div class="control-container" *ngIf="['checkbox', 'radio'].includes(item.type)">
+            <div class="type-label">
+              <label class="form-check-label" for="">{{ item.labelView }}</label>
+            </div>
+            <div class="control-editor">
+              <input class="form-check-input me-2" [type]="item.type" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 mt-4" [formGroup]="form">
+      <h4 class="">
+        <input type="text" name="title" id="title" formControlName="title" placeholder="Enter form title" />
+      </h4>
+      <div id="selected-container" cdkDropList [cdkDropListData]="selected" class="drop-list"
+        (cdkDropListDropped)="move($event); arrange($event)" formArrayName="form">
+        <div class="list-item" *ngFor="let item of selected; let i = index" cdkDrag>
+          <div class="control-container" *ngIf="!['checkbox', 'radio'].includes(item.type)" [formGroupName]="i">
+            <div class="type-label">
+              <label class="form-label" for="">{{ item.labelView }}</label>
+            </div>
+            <div class="control-editor">
+              <input type="text" formControlName="label" placeholder="Label">
+              <input [type]="item.type" />
+            </div>
+          </div>
+          <div class="control-container" *ngIf="['checkbox', 'radio'].includes(item.type)" formGroupName="{{ i }}">
+            <input class="form-check-input me-2" [type]="item.type" />
+            <label class="form-check-label" for="">{{ item.labelView }}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
+<app-control-editor [display]="true" (closeEvent)="handleModalEven($event)" ></app-control-editor> -->
