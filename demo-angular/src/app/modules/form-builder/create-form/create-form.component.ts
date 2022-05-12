@@ -120,14 +120,16 @@ export class CreateFormComponent implements OnInit {
       );
 
       controlAtIndex.patchValue(data.data.form);
-      ((controlAtIndex as FormGroup).controls['controls'] as FormArray).clear();
-      data.data.form.controls.forEach((value: any) => {
-        ((controlAtIndex as FormGroup).controls['controls'] as FormArray).push(
-          this.fb.group(value)
-        );
-      });
-
-      (this.form as FormGroup).updateValueAndValidity();
+      if (data.data.form?.controls) {
+        (
+          (controlAtIndex as FormGroup).controls['controls'] as FormArray
+        ).clear();
+        data.data.form.controls.forEach((value: any) => {
+          (
+            (controlAtIndex as FormGroup).controls['controls'] as FormArray
+          ).push(this.fb.group(value));
+        });
+      }
     }
   }
 
@@ -148,5 +150,9 @@ export class CreateFormComponent implements OnInit {
       ((this.form.controls['form'] as FormArray).at(index) as FormGroup)
         .controls['controls'] as FormArray
     ).controls as FormGroup[];
+  }
+
+  onSave() {
+    console.log(this.form.value);
   }
 }

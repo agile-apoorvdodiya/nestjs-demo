@@ -14,8 +14,17 @@ export class ControlEditorComponent implements OnInit {
   }
   data: any;
   @Input('data') set setData(value: any) {
+    this.data = this.fb.group({
+      label: '',
+      name: '',
+      type: '',
+      labelView: '',
+      ...(['checkbox', 'radio'].includes(value?.type)
+        ? { controls: this.fb.array([]) }
+        : { placeholder: '' }),
+    });
     this.data.patchValue(value);
-    value.controls.forEach((v: any) => {
+    value.controls?.forEach((v: any) => {
       ((this.data as FormGroup).controls['controls'] as FormArray).push(
         this.fb.group(v)
       );
@@ -24,15 +33,7 @@ export class ControlEditorComponent implements OnInit {
   formValue: any;
   @Input('index') index: number | null = null;
 
-  constructor(private fb: FormBuilder) {
-    this.data = this.fb.group({
-      label: '',
-      name: '',
-      type: '',
-      labelView: '',
-      controls: this.fb.array([]),
-    });
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.formValue = this.data?.value;
