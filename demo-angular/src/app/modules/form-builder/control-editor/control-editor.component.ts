@@ -12,14 +12,29 @@ export class ControlEditorComponent implements OnInit {
   @Input('display') set setDisplay(value: boolean) {
     this.display = value === true ? 'block' : 'none';
   }
-  @Input('data') data: any;
+  data: any;
+  @Input('data') set setData(value: any) {
+    this.data.patchValue(value);
+    value.controls.forEach((v: any) => {
+      ((this.data as FormGroup).controls['controls'] as FormArray).push(
+        this.fb.group(v)
+      );
+    });
+  }
   formValue: any;
   @Input('index') index: number | null = null;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.data = this.fb.group({
+      label: '',
+      name: '',
+      type: '',
+      labelView: '',
+      controls: this.fb.array([]),
+    });
+  }
 
   ngOnInit(): void {
-    console.log(this.data);
     this.formValue = this.data?.value;
   }
 

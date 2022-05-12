@@ -20,6 +20,12 @@
 							<input type="text" formControlName="name">
 						</td>
 					</tr>
+					<tr *ngIf="formValue.type === 'text' || formValue.type === 'password' ">
+						<td>placeholder</td>
+						<td>
+							<input type="text" formControlName="placeholder">
+						</td>
+					</tr>
 					<ng-container *ngIf="formValue?.type === 'radio' || formValue?.type === 'checkbox'">
 						<tr>
 							<td>Controls</td>

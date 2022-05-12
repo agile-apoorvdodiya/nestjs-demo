@@ -38,8 +38,6 @@ export class UploadComponent implements OnInit {
     this.userService
       .uploadUserDoc(this.userId, formData)
       .subscribe((res: any) => {
-        console.log(res);
-
         if (res.type === 1 && res.loaded && res.total) {
           this.progress = (res.loaded / res.total) * 100;
         } else if (res.type === 4) {

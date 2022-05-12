@@ -44,7 +44,7 @@ export class CreateFormComponent implements OnInit {
       label: '',
     },
   ];
-  selected = true
+  selected: any[] = true
     ? []
     : [
         {
@@ -84,8 +84,8 @@ export class CreateFormComponent implements OnInit {
       (this.form.controls['form'] as FormArray).insert(
         event.currentIndex,
         this.fb.group({
-          label: `control-${event.currentIndex}`,
-          name: `control-${event.currentIndex}`,
+          label: `control-${this.selected.length}`,
+          name: `control-${this.selected.length}`,
           type: item.type,
           labelView: item.labelView,
           ...(item.type === 'radio' || item.type === 'checkbox'
@@ -97,7 +97,9 @@ export class CreateFormComponent implements OnInit {
                   }),
                 ]),
               }
-            : {}),
+            : {
+                placeholder: '',
+              }),
         })
       );
     }
@@ -112,19 +114,28 @@ export class CreateFormComponent implements OnInit {
 
   handleModalEven(data: any) {
     this.openModal = false;
-    console.log(data);
-    if (data?.index >= 0) {
-      (this.form.controls['form'] as FormArray)
-        .at(data?.index)
-        .setValue(data.form);
+    if (data?.data?.index >= 0 && data.save) {
+      const controlAtIndex = (this.form.controls['form'] as FormArray).at(
+        data?.data?.index
+      );
+
+      controlAtIndex.patchValue(data.data.form);
+      ((controlAtIndex as FormGroup).controls['controls'] as FormArray).clear();
+      data.data.form.controls.forEach((value: any) => {
+        ((controlAtIndex as FormGroup).controls['controls'] as FormArray).push(
+          this.fb.group(value)
+        );
+      });
+
       (this.form as FormGroup).updateValueAndValidity();
-      console.log(this.form.value);
     }
   }
 
   onEditControl(index: number) {
     this.index = index;
-    this.selectedControl = (this.form.controls['form'] as FormArray).at(index);
+    this.selectedControl = (this.form.controls['form'] as FormArray).at(
+      index
+    ).value;
     this.openModal = true;
   }
 
