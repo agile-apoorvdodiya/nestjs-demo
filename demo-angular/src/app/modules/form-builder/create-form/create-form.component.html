@@ -7,7 +7,7 @@
         <div class="list-item" *ngFor="let item of controls" cdkDrag>
           <div class="control-container" *ngIf="!['checkbox', 'radio'].includes(item.type)">
             <div class="type-label">
-              <label class="form-label" for="">{{ item.labelView }}</label>
+              <label for="">{{ item.labelView }}</label>
             </div>
             <div class="control-editor">
               <input class="" [type]="item.type" />
@@ -15,10 +15,10 @@
           </div>
           <div class="control-container" *ngIf="['checkbox', 'radio'].includes(item.type)">
             <div class="type-label">
-              <label class="form-check-label" for="">{{ item.labelView }}</label>
+              <label for="">{{ item.labelView }}</label>
             </div>
             <div class="control-editor">
-              <input class="form-check-input me-2" [type]="item.type" />
+              <input [type]="item.type" />
             </div>
           </div>
         </div>
@@ -33,21 +33,42 @@
         <div class="list-item" *ngFor="let item of selected; let i = index" cdkDrag>
           <div class="control-container" *ngIf="!['checkbox', 'radio'].includes(item.type)" [formGroupName]="i">
             <div class="type-label">
-              <label class="form-label" for="">{{ item.labelView }}</label>
+              <label for="">{{ getControl(i).controls['label']?.value }}</label>
             </div>
             <div class="control-editor">
-              <input type="text" formControlName="label" placeholder="Label">
               <input [type]="item.type" />
+            </div>
+            <div class="edit-button">
+              <button class="btn btn-sm" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
             </div>
           </div>
           <div class="control-container" *ngIf="['checkbox', 'radio'].includes(item.type)" formGroupName="{{ i }}">
-            <input class="form-check-input me-2" [type]="item.type" />
-            <label class="form-check-label" for="">{{ item.labelView }}</label>
+            <div class="type-label">
+              <label for="">{{ getControl(i).controls['label']?.value }}</label>
+            </div>
+            <div class="control-editor">
+              {{item.type}}
+              <table class="table">
+                <tr *ngFor="let control of getControlArray(i)">
+                  <td>
+                    <input [type]="item.type">
+                  </td>
+                  <td>
+                    <label>{{control.controls['label'].value}}</label>
+                  </td>
+
+                </tr>
+              </table>
+            </div>
+            <div class="edit-button">
+              <button class="btn btn-sm" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- 
-<app-control-editor [display]="true" (closeEvent)="handleModalEven($event)" ></app-control-editor> -->
+
+<app-control-editor *ngIf="openModal" [display]="openModal" (closeEvent)="handleModalEven($event)"
+  [data]="selectedControl" [index]="index"></app-control-editor>

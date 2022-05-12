@@ -6,10 +6,38 @@
 				<button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span
 						aria-hidden="true">&times;</span></button>
 			</div>
-			<div class="modal-body">
-				<p>Model body text</p>
+			<div class="modal-body" [formGroup]="data">
+				<table class="table">
+					<tr>
+						<td>Label</td>
+						<td>
+							<input type="text" formControlName="label">
+						</td>
+					</tr>
+					<tr>
+						<td>id/name</td>
+						<td>
+							<input type="text" formControlName="name">
+						</td>
+					</tr>
+					<ng-container *ngIf="formValue?.type === 'radio' || formValue?.type === 'checkbox'">
+						<tr>
+							<td>Controls</td>
+							<td><button class="btn btn-sm" (click)="addControl()"><i class="fa fa-plus"></i></button>
+							</td>
+						</tr>
+						<tr *ngFor="let control of getControlsArray(); let i = index" [formGroup]="control">
+							<td>{{formValue?.type}}</td>
+							<td><input type="text" formControlName="label" placeholder="Label"></td>
+							<td><input type="text" formControlName="value" placeholder="Value"></td>
+							<td><button class="btn btn-sm" (click)="deleteControl(i)">
+									<i class="fa fa-trash"></i></button></td>
+						</tr>
+					</ng-container>
+				</table>
 			</div>
 			<div class="modal-footer">
+				<button type="button" class="btn btn-default" (click)="onSave()">Save</button>
 				<button type="button" class="btn btn-default" (click)="onCloseHandled()">Close</button>
 			</div>
 		</div>
