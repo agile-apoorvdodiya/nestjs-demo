@@ -12,6 +12,8 @@ export class UserMiddleware implements NestMiddleware {
   constructor(private http: HttpService) {}
 
   async use(req: any, res: any, next: () => void) {
+    console.log(req.headers);
+    
     if (!req.headers['authorization']) {
       throw new HttpException(
         {
@@ -32,6 +34,8 @@ export class UserMiddleware implements NestMiddleware {
         }),
       );
     } catch (err) {
+      console.log(err);
+      
       throw new HttpException(
         {
           data: err?.response?.data,

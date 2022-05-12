@@ -8,22 +8,41 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiCreatedResponse,
+  ApiHeader,
+  ApiOkResponse,
+  ApiUnauthorizedResponse,
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
+} from '@nestjs/swagger';
+
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './guards/auth.guard';
+import { ErrorResponseDto } from './dto/errorResponseDto';
+import { SuccessResponseDto } from './dto/successResponseDto';
+import { UserRequestDto } from './dto/userDto';
+import { LoginDto } from './dto/loginDto';
 
+@ApiBearerAuth()
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
+  @ApiHeader({
+    name: 'authorization',
+    description: 'jwt token for authorization',
+  })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiOkResponse({ type: SuccessResponseDto })
+  @ApiParam({ name: 'id', type: String })
   @UseGuards(JwtAuthGuard)
   @Delete('users/:id')
   async deleteUserById(@Param() param: any) {
@@ -47,6 +66,16 @@ export class AppController {
     };
   }
 
+  @ApiHeader({
+    name: 'authorization',
+    description: 'jwt token for authorization',
+  })
+  @ApiBadRequestResponse({ type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiNotFoundResponse({ type: ErrorResponseDto })
+  @ApiOkResponse({ type: SuccessResponseDto })
+  @ApiParam({ name: 'id', type: String })
+  @ApiBody({ type: UserRequestDto })
   @UseGuards(JwtAuthGuard)
   @Put('users/:id')
   async updateUserById(@Param() Param: any, @Body() data: any) {
@@ -74,7 +103,15 @@ export class AppController {
     };
   }
 
+  @ApiHeader({
+    name: 'authorization',
+    description: 'jwt token for authorization',
+  })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiNotFoundResponse({ type: ErrorResponseDto })
+  @ApiOkResponse({ type: SuccessResponseDto })
   @UseGuards(JwtAuthGuard)
+  @ApiParam({ name: 'id', type: String })
   @Get('users/:id')
   async getUserById(@Param() param: any) {
     const user = await this.appService.getUserById(param['id']);
@@ -96,6 +133,12 @@ export class AppController {
     };
   }
 
+  @ApiHeader({
+    name: 'authorization',
+    description: 'jwt token for authorization',
+  })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiOkResponse({ type: SuccessResponseDto })
   @UseGuards(JwtAuthGuard)
   @Get('users')
   async getAllUser() {
@@ -106,6 +149,13 @@ export class AppController {
     };
   }
 
+  @ApiHeader({
+    name: 'authorization',
+    description: 'jwt token for authorization',
+  })
+  @ApiBadRequestResponse({ type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiOkResponse({ type: SuccessResponseDto })
   @UseGuards(JwtAuthGuard)
   @Post('users')
   async createUser(@Body() userData: any) {
@@ -128,7 +178,10 @@ export class AppController {
     };
   }
 
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiOkResponse({ type: SuccessResponseDto })
   @Post('users/login')
+  @ApiBody({ type: LoginDto })
   async loginUser(@Body() userData: any) {
     if (!userData || !userData.email || !userData.password) {
       throw new HttpException(
@@ -156,7 +209,7 @@ export class AppController {
 
     return {
       success: true,
-      message: 'user created successfully',
+      message: 'user logged in successfully',
       user,
     };
   }
