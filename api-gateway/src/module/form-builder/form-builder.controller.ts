@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -11,7 +13,9 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiHeader,
+  ApiNotFoundResponse,
   ApiOkResponse,
+  ApiParam,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { ErrorResponseDto } from 'src/dto/errorResponseDto';
@@ -69,6 +73,34 @@ export class FormBuilderController {
       forms,
       success: true,
       message: 'Successfully fetched forms',
+    };
+  }
+
+  @ApiParam({
+    name: 'id',
+    type: String,
+  })
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: SuccessResponseDto })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiNotFoundResponse({ type: ErrorResponseDto })
+  @Delete(':id')
+  async deleteFormById(@Param() param: any) {
+    const response = await this.formBuilderService.deleteFormById(param['id']);
+    if (response.deletedCount === 0) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          success: false,
+          message: 'form not found',
+          error: 'not found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    return {
+      success: true,
+      message: 'Successfully deleted form',
     };
   }
 }

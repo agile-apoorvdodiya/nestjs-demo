@@ -3,6 +3,7 @@ import {
   FormBuilderService,
   IForm,
 } from 'src/app/services/form-builder.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form-builder',
@@ -33,5 +34,28 @@ export class FormBuilderComponent implements OnInit {
 
   closeHandler() {
     this.viewForm = false;
+  }
+
+  onDelete(index: number) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Are you sure you want to delete this form?  ',
+      text: 'This operation can not be revert',
+      confirmButtonText: 'Yes',
+      showCancelButton: true,
+    }).then((res: any) => {
+      if (res?.isConfirmed) {
+        this.formBuilderService
+          .deleteForm(this.forms[index]._id)
+          .subscribe((res) => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Form deleted successfully!',
+            }).then((res) => {
+              this.getAllForms();
+            });
+          });
+      }
+    });
   }
 }

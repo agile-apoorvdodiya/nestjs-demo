@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 export interface IForm {
+  _id: string;
   title: string;
   form: {
     label: string;
@@ -31,5 +32,9 @@ export class FormBuilderService {
 
   createForm(data: any) {
     return this.http.post(`${this.baseURL}/`, data);
+  }
+
+  deleteForm(id: any) {
+    return this.http.delete(`${this.baseURL}/${id}`);
   }
 }

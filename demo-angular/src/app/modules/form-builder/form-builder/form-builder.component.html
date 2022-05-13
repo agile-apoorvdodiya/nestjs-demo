@@ -8,17 +8,22 @@
     </div>
   </div>
   <div class="table-responsive" *ngIf="forms.length">
-    <table class="table table-stripped">
-      <tr>
-        <th>Form Title</th>
-        <th class="text-center">Action</th>
-      </tr>
-      <tr *ngFor="let form of forms; let i = index">
-        <td>{{form.title}}</td>
-        <td class="text-center">
-          <button class="btn btn-sm" (click)="viewModal(i)"><i class="fa fa-eye"></i></button>
-        </td>
-      </tr>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Form Title</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let form of forms; let i = index">
+          <td>{{form.title}}</td>
+          <td class="text-center">
+            <button class="btn btn-sm" (click)="viewModal(i)"><i class="fa fa-eye"></i></button>
+            <button class="btn btn-sm ms-2" (click)="onDelete(i)"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
   <div class="table-responsive" *ngIf="!forms.length">

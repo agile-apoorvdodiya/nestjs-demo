@@ -24,4 +24,13 @@ export class FormBuilderService {
       return err;
     }
   }
+
+  async deleteFormById(id: string) {
+    try {
+      const deleteForm = await this.formBuilderModel.deleteOne({ _id: id });
+      return deleteForm;
+    } catch (err) {
+      return err;
+    }
+  }
 }

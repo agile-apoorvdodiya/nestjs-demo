@@ -108,7 +108,7 @@ export class CreateFormComponent implements OnInit {
             ? {
                 controls: this.fb.array([
                   this.fb.group({
-                    label: 'Radio 1',
+                    label: 'Control 1',
                     value: '1',
                   }),
                 ]),

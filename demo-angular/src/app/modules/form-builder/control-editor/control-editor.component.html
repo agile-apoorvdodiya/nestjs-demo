@@ -1,5 +1,5 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': display}">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Edit form control</h4>
@@ -9,21 +9,31 @@
 			<div class="modal-body" [formGroup]="data">
 				<table class="table">
 					<tr>
+						<td>Control type</td>
+						<td>{{formValue.type}}</td>
+					</tr>
+					<tr>
 						<td>Label</td>
 						<td>
-							<input type="text" formControlName="label">
+							<div>
+								<input type="text" formControlName="label">
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td>id/name</td>
 						<td>
-							<input type="text" formControlName="name">
+							<div>
+								<input type="text" formControlName="name">
+							</div>
 						</td>
 					</tr>
 					<tr *ngIf="formValue.type === 'text' || formValue.type === 'password' ">
 						<td>placeholder</td>
 						<td>
-							<input type="text" formControlName="placeholder">
+							<div>
+								<input type="text" formControlName="placeholder">
+							</div>
 						</td>
 					</tr>
 					<ng-container *ngIf="formValue?.type === 'radio' || formValue?.type === 'checkbox'">
@@ -34,8 +44,16 @@
 						</tr>
 						<tr *ngFor="let control of getControlsArray(); let i = index" [formGroup]="control">
 							<td>{{formValue?.type}}</td>
-							<td><input type="text" formControlName="label" placeholder="Label"></td>
-							<td><input type="text" formControlName="value" placeholder="Value"></td>
+							<td>
+								<div>
+									<input type="text" formControlName="label" placeholder="Label">
+								</div>
+							</td>
+							<td>
+								<div>
+									<input type="text" formControlName="value" placeholder="Value">
+								</div>
+							</td>
 							<td><button class="btn btn-sm" (click)="deleteControl(i)">
 									<i class="fa fa-trash"></i></button></td>
 						</tr>
