@@ -28,6 +28,8 @@
       <div class="d-flex justify-content-between">
         <h4 class="">
           <input type="text" name="title" id="title" formControlName="title" placeholder="Enter form title" />
+          <small class="d-block text-danger fst-italic" *ngIf="getFormControlError('title', 'required')">Please enter
+            title</small>
         </h4>
         <div>
           <button class="btn btn-sm btn-outline-primary" (click)="onSave()">Save Form</button>
@@ -39,11 +41,12 @@
           <div class="control-container" *ngIf="!['checkbox', 'radio'].includes(item.type)" [formGroupName]="i">
             <div class="type-label">
               <label for="">{{ getControl(i).controls['label']?.value }}</label>
+              <small class="d-block">{{item.type}}</small>
             </div>
             <div class="control-editor">
               <input [type]="item.type" [placeholder]="getControl(i).controls['placeholder']?.value || ''" />
             </div>
-            <div class="edit-button">
+             <div class="edit-button">
               <button class="btn btn-sm" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
             </div>
           </div>
@@ -71,6 +74,9 @@
           </div>
         </div>
       </div>
+      <small class="text-danger fst-italic"
+        *ngIf="form.controls['form']?.touched && !form.controls['form']?.controls.length">Please at lease 1 form
+        element</small>
     </div>
   </div>
 </div>

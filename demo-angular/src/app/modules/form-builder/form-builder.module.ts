@@ -7,9 +7,10 @@ import { CreateFormComponent } from './create-form/create-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ControlEditorComponent } from './control-editor/control-editor.component';
+import { ViewFormComponent } from './view-form/view-form.component';
 
 @NgModule({
-  declarations: [FormBuilderComponent, CreateFormComponent, ControlEditorComponent],
+  declarations: [FormBuilderComponent, CreateFormComponent, ControlEditorComponent, ViewFormComponent],
   imports: [
     ReactiveFormsModule,
     CommonModule,

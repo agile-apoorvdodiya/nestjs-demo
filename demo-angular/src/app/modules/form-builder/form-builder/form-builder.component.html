@@ -2,12 +2,29 @@
   <div class="d-flex justify-content-between">
     <div class="display-4">Forms</div>
     <div>
-      <button
-        class="btn btn-sm btn-outline-primary mt-2"
-        routerLink="/form-builder/create"
-      >
+      <button class="btn btn-sm btn-outline-primary mt-2" routerLink="/form-builder/create">
         Create
       </button>
     </div>
   </div>
+  <div class="table-responsive" *ngIf="forms.length">
+    <table class="table table-stripped">
+      <tr>
+        <th>Form Title</th>
+        <th class="text-center">Action</th>
+      </tr>
+      <tr *ngFor="let form of forms; let i = index">
+        <td>{{form.title}}</td>
+        <td class="text-center">
+          <button class="btn btn-sm" (click)="viewModal(i)"><i class="fa fa-eye"></i></button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="table-responsive" *ngIf="!forms.length">
+    <span class="fst-italic">No forms found</span>
+  </div>
 </div>
+
+<app-view-form *ngIf="viewForm" [display]="viewForm" [data]="selectedForm" (closeEvent)="closeHandler()">
+</app-view-form>

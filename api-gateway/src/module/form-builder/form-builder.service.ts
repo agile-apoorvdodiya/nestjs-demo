@@ -9,7 +9,7 @@ export class FormBuilderService {
 
   async createForm(formData: any) {
     try {
-      const form = this.formBuilderModel.create([formData]);
+      const form = await this.formBuilderModel.create([formData]);
       return form;
     } catch (err) {
       return err;
@@ -18,7 +18,7 @@ export class FormBuilderService {
 
   async getAllForms() {
     try {
-      const forms = this.formBuilderModel.find();
+      const forms = await this.formBuilderModel.find();
       return forms;
     } catch (err) {
       return err;

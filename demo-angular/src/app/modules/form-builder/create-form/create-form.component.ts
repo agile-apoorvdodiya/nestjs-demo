@@ -5,8 +5,16 @@ import {
   copyArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { Modal } from "bootstrap";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { FormBuilderService } from 'src/app/services/form-builder.service';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-create-form',
   templateUrl: './create-form.component.html',
@@ -16,16 +24,24 @@ export class CreateFormComponent implements OnInit {
   openModal = false;
   selectedControl: any = null;
   index: null | number = null;
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private formBuilderService: FormBuilderService
+  ) {}
   ngOnInit(): void {
     // this.updateForm();
     this.createForm();
   }
-  form: any = null;
+  form: any | FormGroup = null;
   controls = [
     {
       type: 'text',
       labelView: 'Text',
+      label: '',
+    },
+    {
+      type: 'number',
+      labelView: 'Number',
       label: '',
     },
     {
@@ -108,7 +124,7 @@ export class CreateFormComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       title: ['', Validators.required],
-      form: this.fb.array([]),
+      form: this.fb.array([], Validators.minLength(1)),
     });
   }
 
@@ -152,7 +168,31 @@ export class CreateFormComponent implements OnInit {
     ).controls as FormGroup[];
   }
 
+  getFormControlError(control: string, error: string) {
+    const formControl = this.form.controls[control] as FormControl;
+    return (
+      formControl.touched && formControl.errors && formControl.errors[error]
+    );
+  }
+
   onSave() {
-    console.log(this.form.value);
+    if (this.form.invalid) {
+      (this.form as FormGroup).markAllAsTouched();
+      return;
+    }
+
+    this.formBuilderService
+      .createForm(this.form.value)
+      .subscribe((res: any) => {
+        console.log(res);
+        if (res?.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Form created successfully!',
+          }).then((res) => {
+            history.back();
+          });
+        }
+      });
   }
 }

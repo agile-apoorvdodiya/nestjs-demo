@@ -34,13 +34,12 @@ export class FormBuilderController {
   @ApiUnauthorizedResponse({ type: ErrorResponseDto })
   @ApiBadRequestResponse({ type: ErrorResponseDto })
   @Post()
-  createForm(@Body() formData: any) {
+  async createForm(@Body() formData: any) {
     if (
       !formData ||
       !formData.title ||
       !formData.form ||
-      !formData.form.label ||
-      !formData.form.type
+      !formData.form.length
     ) {
       throw new HttpException(
         {
@@ -52,14 +51,24 @@ export class FormBuilderController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.formBuilderService.createForm(formData);
+    const form = await this.formBuilderService.createForm(formData);
+    return {
+      form,
+      success: true,
+      message: 'successfully created form',
+    };
   }
 
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: SuccessResponseDto })
   @ApiUnauthorizedResponse({ type: ErrorResponseDto })
   @Get()
-  getAllForm() {
-    return this.formBuilderService.getAllForms();
+  async getAllForm() {
+    const forms = await this.formBuilderService.getAllForms();
+    return {
+      forms,
+      success: true,
+      message: 'Successfully fetched forms',
+    };
   }
 }
