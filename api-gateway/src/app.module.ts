@@ -6,9 +6,13 @@ import { UserSchema } from './schema/user';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { FormBuilderModule } from './module/form-builder/form-builder.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
+    FormBuilderModule,
     PassportModule,
     JwtModule.register({
       secret: 'secret from env',
@@ -22,7 +26,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     {
       provide: 'DB_CONNECTION',
       useFactory: () => {
-        return mongoose.connect('mongodb://localhost:27017/nestjs');
+        return mongoose.connect(process.env.DB_URL);
       },
     },
     {
