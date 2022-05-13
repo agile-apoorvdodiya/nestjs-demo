@@ -19,6 +19,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { ErrorResponseDto } from 'src/dto/errorResponseDto';
+import { SubmitFormDto } from 'src/module/form-builder/dto/submit-form';
 import { SuccessResponseDto } from 'src/dto/successResponseDto';
 import { JwtAuthGuard } from 'src/guards/auth.guard';
 import { CreateFormDto } from './dto/createFormDto';
@@ -64,6 +65,32 @@ export class FormBuilderController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBody({ type: SubmitFormDto })
+  @ApiOkResponse({ type: SuccessResponseDto })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiBadRequestResponse({ type: ErrorResponseDto })
+  @Post('submit')
+  async submitForm(@Body() formData: any) {
+    if (!formData || !formData.id || !formData.title || !formData.form) {
+      throw new HttpException(
+        {
+          success: false,
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Insufficient data',
+          message: 'Please provide all fields',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const form = await this.formBuilderService.submitForm(formData);
+    return {
+      form,
+      success: true,
+      message: 'successfully created form',
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: SuccessResponseDto })
   @ApiUnauthorizedResponse({ type: ErrorResponseDto })
   @Get()
@@ -71,6 +98,19 @@ export class FormBuilderController {
     const forms = await this.formBuilderService.getAllForms();
     return {
       forms,
+      success: true,
+      message: 'Successfully fetched forms',
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: SuccessResponseDto })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @Get(':id')
+  async getFormById(@Param() param: any) {
+    const form = await this.formBuilderService.getFormById(param['id']);
+    return {
+      form,
       success: true,
       message: 'Successfully fetched forms',
     };

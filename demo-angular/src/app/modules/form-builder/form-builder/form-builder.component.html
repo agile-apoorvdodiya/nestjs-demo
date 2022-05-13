@@ -12,12 +12,16 @@
       <thead>
         <tr>
           <th>Form Title</th>
+          <th>Submit Link</th>
           <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let form of forms; let i = index">
           <td>{{form.title}}</td>
+          <td><a href="{{'http://localhost:4200/form-builder/submit/' + form._id }}" target="_blank"
+              rel="noopener noreferrer">
+              {{'http://localhost:4200/form-builder/submit/' + form._id }}</a></td>
           <td class="text-center">
             <button class="btn btn-sm" (click)="viewModal(i)"><i class="fa fa-eye"></i></button>
             <button class="btn btn-sm ms-2" (click)="onDelete(i)"><i class="fa fa-trash"></i></button>

@@ -3,28 +3,33 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">View Form</h4>
-        <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span
-            aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()">
+          <span aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" [formGroup]="form">
         <div class="display-4">{{data.title}}</div>
-        <ng-container *ngFor="let control of data.form">
-          <div class="form-group" *ngIf="['text', 'password'].includes(control.type)">
-            <label class="form-label mt-2">{{control.label}}</label>
-            <input class="form-control" [type]="control.type" [placeholder]="control.placeholder" [name]="control.name">
-          </div>
-          <div class="form-group" *ngIf="['radio', 'checkbox'].includes(control.type)">
-            <label class="form-label">{{control.label}}</label>
-            <div class="d-flex">
-              <ng-container *ngFor="let formControl of control.controls">
-                <input class="form-check-input mx-2" [type]="control.type" [name]="control.name" [id]="formControl.value">
-                <label class="form-check-label">{{formControl.label}}</label>
-              </ng-container>
+        <div formGroupName="form">
+          <ng-container *ngFor="let control of data.form; let i = index">
+            <div class="form-group" [formGroupName]="i" *ngIf="['text', 'password'].includes(control.type)">
+              <label class="form-label mt-2">{{control.label}}</label>
+              <input class="form-control" [type]="control.type" [placeholder]="control.placeholder"
+                [name]="control.name" [formControlName]="control.name">
             </div>
-          </div>
-        </ng-container>
+            <div class="form-group" [formGroupName]="i" *ngIf="['radio', 'checkbox'].includes(control.type)">
+              <label class="form-label">{{control.label}}</label>
+              <div class="d-flex">
+                <ng-container *ngFor="let formControl of control.controls">
+                  <input class="form-check-input mx-2" [type]="control.type" [name]="control.name"
+                    [id]="formControl.value" [formControlName]="control.name">
+                  <label class="form-check-label">{{formControl.label}}</label>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </div>
       </div>
       <div class="modal-footer">
+        <button type="button" class="btn btn-default me-2" (click)="onSubmit()">Submit</button>
         <button type="button" class="btn btn-default" (click)="onCloseHandled()">Close</button>
       </div>
     </div>

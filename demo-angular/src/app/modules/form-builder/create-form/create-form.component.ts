@@ -184,7 +184,6 @@ export class CreateFormComponent implements OnInit {
     this.formBuilderService
       .createForm(this.form.value)
       .subscribe((res: any) => {
-        console.log(res);
         if (res?.success) {
           Swal.fire({
             icon: 'success',
