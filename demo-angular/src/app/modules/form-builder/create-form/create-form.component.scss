@@ -1,13 +1,14 @@
 .drop-list {
+  margin: 15px 0;
   border: solid 1px #ccc;
   min-height: 60px;
   display: block;
-  background: darkgreen;
+  background: darkslategray;
   .list-item {
     padding: 10px 10px;
     border-bottom: solid 1px #ccc;
     cursor: move;
-    background: darkgreen;
+    background: darkslategray;
 
     &:last-child {
       border: none;
@@ -30,11 +31,19 @@
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
+.control-pick-container {
+  display: flex;
+  justify-content: center;
+  .label {
+    font-size: 18px;
+  }
+}
+
 .control-container {
   display: flex;
   gap: 10px;
   .type-label {
-    min-width: 60px;
+    min-width: 120px;
   }
   .control-editor {
     input {

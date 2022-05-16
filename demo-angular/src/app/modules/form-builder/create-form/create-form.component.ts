@@ -168,6 +168,11 @@ export class CreateFormComponent implements OnInit {
     this.openModal = true;
   }
 
+  onDeleteControl(index: number) {
+    (this.form.controls.form as FormArray).removeAt(index);
+    this.selected.splice(index, 1);
+  }
+
   getControl(index: number) {
     return (this.form.controls['form'] as FormArray).at(index) as FormGroup;
   }
@@ -187,7 +192,7 @@ export class CreateFormComponent implements OnInit {
   }
 
   onSave() {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.form?.controls?.form?.controls?.length === 0) {
       (this.form as FormGroup).markAllAsTouched();
       return;
     }
