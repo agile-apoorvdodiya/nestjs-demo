@@ -34,6 +34,10 @@ export class FormBuilderService {
     return this.http.post(`${this.baseURL}/`, data);
   }
 
+  updateForm(data: any, id: string) {
+    return this.http.put(`${this.baseURL}/${id}`, data);
+  }
+
   deleteForm(id: any) {
     return this.http.delete(`${this.baseURL}/${id}`);
   }

@@ -17,6 +17,15 @@ export class FormBuilderService {
     }
   }
 
+  async updateForm(formData: any, id: string) {
+    try {
+      const form = await this.formBuilderModel.updateOne({ _id: id }, formData);
+      return form;
+    } catch (err) {
+      return err;
+    }
+  }
+
   async submitForm(formData: any) {
     try {
       const form = await this.formSubmitModel.create([formData]);
@@ -43,13 +52,13 @@ export class FormBuilderService {
       return err;
     }
   }
-  
+
   async getFormById(id: string) {
     try {
       const form = await this.formBuilderModel.findById(id);
       return form;
     } catch (err) {
-      return err;
+      throw err;
     }
   }
 }

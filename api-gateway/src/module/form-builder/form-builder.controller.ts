@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -57,6 +58,51 @@ export class FormBuilderController {
       );
     }
     const form = await this.formBuilderService.createForm(formData);
+    return {
+      form,
+      success: true,
+      message: 'successfully created form',
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @ApiBody({ type: CreateFormDto })
+  @ApiOkResponse({ type: SuccessResponseDto })
+  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiBadRequestResponse({ type: ErrorResponseDto })
+  @Put(':id')
+  async updateForm(@Body() formData: any, @Param() param: any) {
+    if (
+      !formData ||
+      !formData.title ||
+      !formData.form ||
+      !formData.form.length
+    ) {
+      throw new HttpException(
+        {
+          success: false,
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Insufficient data',
+          message: 'Please provide all fields',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const form = await this.formBuilderService.updateForm(
+      formData,
+      param['id'],
+    );
+    if (form.modifiedCount === 0) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          success: false,
+          message: 'form not found',
+          error: 'not found',
+        },
+        HttpStatus.NOT_FOUND,
+      );
+    }
     return {
       form,
       success: true,

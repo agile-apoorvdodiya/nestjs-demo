@@ -12,7 +12,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { FormBuilderService } from 'src/app/services/form-builder.service';
+import { ActivatedRoute } from '@angular/router';
+import {
+  FormBuilderService,
+  IForm,
+} from 'src/app/services/form-builder.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -24,10 +28,17 @@ export class CreateFormComponent implements OnInit {
   openModal = false;
   selectedControl: any = null;
   index: null | number = null;
+  formId = '';
   constructor(
     private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute,
     private formBuilderService: FormBuilderService
-  ) {}
+  ) {
+    activatedRoute.params.subscribe((params) => {
+      this.formId = params['id'];
+      if (this.formId) this.getFormData();
+    });
+  }
   ngOnInit(): void {
     // this.updateForm();
     this.createForm();
@@ -181,17 +192,70 @@ export class CreateFormComponent implements OnInit {
       return;
     }
 
-    this.formBuilderService
-      .createForm(this.form.value)
-      .subscribe((res: any) => {
-        if (res?.success) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Form created successfully!',
-          }).then((res) => {
-            history.back();
-          });
-        }
+    (this.formId
+      ? this.formBuilderService.updateForm(this.form.value, this.formId)
+      : this.formBuilderService.createForm(this.form.value)
+    ).subscribe((res: any) => {
+      if (res?.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Form created successfully!',
+        }).then((res) => {
+          history.back();
+        });
+      }
+    });
+  }
+
+  getFormData() {
+    this.formBuilderService.getForm(this.formId).subscribe(
+      (res: any) => {
+        console.log(res);
+
+        this.createFormFromValue(res.form);
+      },
+      (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Something went wrong',
+        }).then((res) => {
+          history.back();
+        });
+      }
+    );
+  }
+
+  createFormFromValue(formData: IForm) {
+    if (formData) {
+      this.form = this.fb.group({
+        title: [formData.title, Validators.required],
+        form: this.fb.array(
+          formData.form.map((value) => {
+            return this.fb.group({
+              label: value.label,
+              labelView: value.labelView,
+              name: value.name,
+              type: value.type,
+              ...(['checkbox', 'radio'].includes(value.type)
+                ? {
+                    controls: this.fb.array(
+                      value.controls.map((control) =>
+                        this.fb.group({
+                          label: control.label,
+                          value: control.value,
+                        })
+                      )
+                    ),
+                  }
+                : {
+                    placeholder: value.placeholder,
+                  }),
+            });
+          }),
+          Validators.minLength(1)
+        ),
       });
+      this.selected = formData.form;
+    }
   }
 }

@@ -14,6 +14,10 @@ const routes: Routes = [
     component: CreateFormComponent,
   },
   {
+    path: 'edit/:id',
+    component: CreateFormComponent,
+  },
+  {
     path: 'submit/:id',
     component: SubmitFormComponent,
   },
