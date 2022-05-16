@@ -32,7 +32,7 @@
             title</small>
         </h4>
         <div>
-          <button class="btn btn-sm btn-outline-primary" (click)="onSave()">Save Form</button>
+          <button class="btn btn-sm btn-outline-primary text-light" (click)="onSave()">Save Form</button>
         </div>
       </div>
       <div id="selected-container" cdkDropList [cdkDropListData]="selected" class="drop-list"
@@ -47,7 +47,7 @@
               <input [type]="item.type" [placeholder]="getControl(i).controls['placeholder']?.value || ''" />
             </div>
              <div class="edit-button">
-              <button class="btn btn-sm" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
+              <button class="btn btn-sm text-light" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
             </div>
           </div>
           <div class="control-container" *ngIf="['checkbox', 'radio'].includes(item.type)" formGroupName="{{ i }}">
@@ -69,7 +69,7 @@
               </table>
             </div>
             <div class="edit-button">
-              <button class="btn btn-sm" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
+              <button class="btn btn-sm text-light" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
             </div>
           </div>
         </div>

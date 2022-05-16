@@ -2,12 +2,12 @@
   border: solid 1px #ccc;
   min-height: 60px;
   display: block;
-  background: lightgray;
+  background: darkgreen;
   .list-item {
     padding: 10px 10px;
     border-bottom: solid 1px #ccc;
     cursor: move;
-    background: white;
+    background: darkgreen;
 
     &:last-child {
       border: none;

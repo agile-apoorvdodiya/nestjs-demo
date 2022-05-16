@@ -1,5 +1,51 @@
+body {
+  background-color: darkslateblue;
+  color: white;
+}
+
+i {
+  color: white;
+}
+
+.table {
+  tr, td {
+    color: white;
+    a {
+      color: white;
+    }
+  }
+}
+
 .container {
   height: 90vh;
+}
+
+.modal-content {
+  border: 1px solid white;
+  background-color: darkslateblue !important;
+}
+
+input {
+  background: gray;
+  color: white;
+  border: none;
+}
+
+.text-danger {
+  color: #ffbdbd !important;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: white;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: white;
 }
 
 // .table-container {

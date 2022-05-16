@@ -2,15 +2,15 @@
   <div>
     <ng-container *ngIf="isLoggedIn">
       <div class="d-flex">
-        <button class="btn btn-sm" routerLink="/users">Users</button>
-        <button class="btn btn-sm" routerLink="/form-builder">
+        <button class="btn btn-sm text-light" routerLink="/users">Users</button>
+        <button class="btn btn-sm text-light" routerLink="/form-builder">
           Form Builder
         </button>
       </div>
     </ng-container>
   </div>
   <button
-    class="btn btn-sm btn-outline-primary"
+    class="btn btn-sm btn-outline-primary text-light"
     *ngIf="isLoggedIn"
     (click)="onLogout()"
   >

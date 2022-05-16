@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between">
     <div class="display-4">Forms</div>
     <div>
-      <button class="btn btn-sm btn-outline-primary mt-2" routerLink="/form-builder/create">
+      <button class="btn btn-sm btn-outline-primary mt-2 text-light" routerLink="/form-builder/create">
         Create
       </button>
     </div>
@@ -23,8 +23,8 @@
               rel="noopener noreferrer">
               {{'http://localhost:4200/form-builder/submit/' + form._id }}</a></td>
           <td class="text-center">
-            <button class="btn btn-sm" (click)="viewModal(i)"><i class="fa fa-eye"></i></button>
-            <button class="btn btn-sm ms-2" (click)="onDelete(i)"><i class="fa fa-trash"></i></button>
+            <button class="btn btn-sm text-light" (click)="viewModal(i)"><i class="fa fa-eye"></i></button>
+            <button class="btn btn-sm ms-2 text-light" (click)="onDelete(i)"><i class="fa fa-trash"></i></button>
           </td>
         </tr>
       </tbody>
