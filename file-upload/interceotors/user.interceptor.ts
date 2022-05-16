@@ -11,8 +11,6 @@ import { inspect } from 'util';
 @Injectable()
 export class UserInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log(' context[headers] ', context['headers']);
-
     throw new HttpException(
       {
         context: context['headers'],

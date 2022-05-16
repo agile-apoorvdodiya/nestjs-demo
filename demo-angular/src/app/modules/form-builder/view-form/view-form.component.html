@@ -10,7 +10,7 @@
         <div class="display-4">{{data.title}}</div>
         <div formGroupName="form">
           <ng-container *ngFor="let control of data.form; let i = index">
-            <div class="form-group" [formGroupName]="i" *ngIf="['checkbox', 'radio'].includes(control.type)">
+            <div class="form-group" [formGroupName]="i" *ngIf="!['checkbox', 'radio'].includes(control.type)">
               <label class="form-label mt-2">{{control.label}}</label>
               <input class="form-control" [type]="control.type" [placeholder]="control.placeholder"
                 [name]="control.name" [formControlName]="control.name">

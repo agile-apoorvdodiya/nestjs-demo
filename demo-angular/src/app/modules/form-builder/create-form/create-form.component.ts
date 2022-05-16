@@ -51,6 +51,16 @@ export class CreateFormComponent implements OnInit {
       label: '',
     },
     {
+      type: 'email',
+      labelView: 'Email',
+      label: '',
+    },
+    {
+      type: 'date',
+      labelView: 'Date',
+      label: '',
+    },
+    {
       type: 'number',
       labelView: 'Number',
       label: '',
