@@ -16,7 +16,7 @@ import { ChatWindowComponent } from './components/chat-window/chat-window.compon
       url: environment.apiUrl,
       options: {
         transports: ['websocket'],
-        autoConnect: false
+        autoConnect: true
       },
     }),
     BrowserModule,

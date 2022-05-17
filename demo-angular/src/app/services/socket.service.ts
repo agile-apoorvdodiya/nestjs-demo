@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, tap } from 'rxjs';
 import { IUser, UserService } from './user.service';
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ export class SocketService {
 
   // called when connected once
   setStatus() {
-    this.socket.connect();
+    // this.socket.connect();
     const userDetails: Partial<IUser> = this.userService.getUserDetails();
     this.socket.emit('setStatus', {
       id: userDetails._id,
@@ -35,6 +35,12 @@ export class SocketService {
   }
 
   getMessages() {
-    return this.socket.fromEvent('privateMessage');
+    this.socket.once('privateMessage', (res: any) => {
+      console.log(res);
+    });
+    return this.socket.fromEvent('privateMessage').pipe(tap(res => {
+      // console.log(res);
+
+    }));
   }
 }

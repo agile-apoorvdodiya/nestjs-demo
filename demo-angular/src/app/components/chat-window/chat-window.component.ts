@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SocketService } from 'src/app/services/socket.service';
+import { IUser, UserService } from 'src/app/services/user.service';
 import { IChatUser } from '../chat/chat.component';
 
 @Component({
@@ -14,9 +15,15 @@ export class ChatWindowComponent implements OnInit {
   expanded = true;
   messages: any[] = [];
   textBox = '';
-  constructor(private socketService: SocketService) {}
+  currentUser: Partial<IUser> = {};
+
+  constructor(
+    private socketService: SocketService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
+    this.currentUser = this.userService.getUserDetails();
     this.subscribeMessage();
     this.subscribeMessage();
   }
@@ -38,6 +45,8 @@ export class ChatWindowComponent implements OnInit {
       this.socketService.sendMessage({
         to: this.chatUser.socketId,
         message: this.textBox,
+        receiver: this.chatUser.id,
+        sender: this.currentUser._id,
       });
       this.textBox = '';
     }
