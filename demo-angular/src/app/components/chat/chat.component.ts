@@ -52,6 +52,10 @@ export class ChatComponent implements OnInit {
       );
       if (index > -1) {
         this.chatWindow.splice(index, 1);
+        const user = this.onlineUsers.find(
+          (user) => user.socketId === data.user.socketId
+        );
+        if (user?.isWindowOpen) user.isWindowOpen = false;
       }
     }
   }

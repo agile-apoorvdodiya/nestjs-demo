@@ -24,6 +24,15 @@ export class SocketIoGateway {
     });
     this.server.emit('userList', this.socketService.onlineUsers);
   }
+  
+  @SubscribeMessage('messageTo')
+  sendTo(client: Socket, payload: any) {
+    console.log(' > ', payload);
+    client.to(payload.to).emit('privateMessage', {
+      from: client.id,
+      message: payload.message
+    })
+  }
 
   handleConnection(client: Socket, ...args: any[]) {
     // console.log(`Client connected: ${client.id}`, args);
