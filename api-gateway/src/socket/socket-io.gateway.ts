@@ -17,6 +17,8 @@ export class SocketIoGateway {
 
   @SubscribeMessage('setStatus')
   setStatus(client: Socket, payload: any) {
+    console.log(payload);
+    
     this.socketService.onlineUsers.push({
       socketId: client.id,
       id: payload.id,
@@ -37,6 +39,15 @@ export class SocketIoGateway {
     });
   }
 
+  @SubscribeMessage('getMessages')
+  async getMessages(client: Socket, payload: any) {
+    const messages = await this.socketService.getMessagesById(
+      payload.from,
+      payload.to,
+    );
+    client.emit('messageHistory', messages);
+  }
+
   handleConnection(client: Socket, ...args: any[]) {
     console.log(`Client connected: ${client.id}`, args);
   }
@@ -46,5 +57,6 @@ export class SocketIoGateway {
       (user) => user.socketId === client.id,
     );
     if (index > -1) this.socketService.onlineUsers.splice(index, 1);
+    this.server.emit('userList', this.socketService.onlineUsers);
   }
 }

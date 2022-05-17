@@ -81,16 +81,19 @@ export class AppService {
         password: userData.password,
       })
       .lean();
-    const payload = {
-      _id: user._id,
-      email: user.email,
-      admin: user.admin,
-      name: user.name,
-    };
+
     return user
       ? {
-          token: this.jwtService.sign(payload),
-          ...payload,
+          token: this.jwtService.sign({
+            _id: user._id,
+            email: user.email,
+            admin: user.admin,
+            name: user.name,
+          }),
+          _id: user._id,
+          email: user.email,
+          admin: user.admin,
+          name: user.name,
         }
       : null;
   }

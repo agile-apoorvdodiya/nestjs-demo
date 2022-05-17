@@ -25,7 +25,6 @@ export class ChatWindowComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.userService.getUserDetails();
     this.subscribeMessage();
-    this.subscribeMessage();
   }
 
   toggleWindow() {
@@ -40,7 +39,7 @@ export class ChatWindowComponent implements OnInit {
     if (this.textBox?.trim()) {
       this.messages.push({
         message: this.textBox,
-        from: 'self',
+        sender: 'self',
       });
       this.socketService.sendMessage({
         to: this.chatUser.socketId,
@@ -53,6 +52,12 @@ export class ChatWindowComponent implements OnInit {
   }
 
   subscribeMessage() {
+    this.socketService
+      .getOlderMessages(this.chatUser.id || '', this.currentUser._id || '')
+      .subscribe((res) => {
+        console.log(res);
+        this.messages = res as any[];
+      });
     this.socketService.getMessages().subscribe((message: any) => {
       if (message.from === this.chatUser.socketId) this.messages.push(message);
     });

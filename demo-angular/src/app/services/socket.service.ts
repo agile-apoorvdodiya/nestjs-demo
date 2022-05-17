@@ -10,16 +10,14 @@ export class SocketService {
 
   // called when connected once
   setStatus() {
-    // this.socket.connect();
+    console.log('setting');
+    
+    this.socket.connect();
     const userDetails: Partial<IUser> = this.userService.getUserDetails();
     this.socket.emit('setStatus', {
       id: userDetails._id,
       name: userDetails.name,
     });
-    // this.socket.fromEvent('privateMessage').subscribe((data: any) => {
-    //   if (data?.from && data?.message) {
-    //   }
-    // });
   }
 
   disconnect() {
@@ -35,12 +33,14 @@ export class SocketService {
   }
 
   getMessages() {
-    this.socket.once('privateMessage', (res: any) => {
-      console.log(res);
-    });
-    return this.socket.fromEvent('privateMessage').pipe(tap(res => {
-      // console.log(res);
+    return this.socket.fromEvent('privateMessage');
+  }
 
-    }));
+  getOlderMessages(to: string, from: string) {
+    this.socket.emit('getMessages', {
+      from,
+      to,
+    });
+    return this.socket.fromEvent('messageHistory');
   }
 }

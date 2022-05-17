@@ -12,7 +12,29 @@ export class SocketService {
         const res = await this.messageModel.create({
           sender: message.sender,
           receiver: message.receiver,
+          message: message.message,
           createdAt: new Date(),
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getMessagesById(sender: string, receiver: string) {
+    try {
+      if (sender && receiver) {
+        return await this.messageModel.find({
+          $or: [
+            {
+              sender,
+              receiver,
+            },
+            {
+              sender: receiver,
+              receiver: sender,
+            },
+          ],
         });
       }
     } catch (error) {
