@@ -1,0 +1,29 @@
+<div class="chat-container">
+  <div class="chat-drawer-container">
+    <div class="chat-drawer" *ngIf="drawerOpen">
+      <div class="drawer-header">
+        <div>
+          Online users
+        </div>
+        <div class="action">
+          <button class="btn">
+            <i class="fa fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <ng-container *ngFor="let user of onlineUsers">
+        <div class="list-item" *ngIf="user?.id !== currentUserDetails?._id" (click)="onUserClick(user)">
+          {{user.name}}
+        </div>
+      </ng-container>
+    </div>
+    <div class="drawer-button">
+      <button class="btn btn-lg btn-outline-primary" (click)="toggleDrawer()"><i class="fa fa-comment"></i></button>
+    </div>
+  </div>
+  <div class="chat-bar">
+    <ng-container *ngFor="let chatUser of chatWindow">
+      <app-chat-window [user]="chatUser" (close)="handleClose($event)"></app-chat-window>
+    </ng-container>
+  </div>
+</div>

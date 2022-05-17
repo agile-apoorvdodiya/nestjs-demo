@@ -9,12 +9,9 @@
       </div>
     </ng-container>
   </div>
-  <button
-    class="btn btn-sm btn-outline-primary text-light"
-    *ngIf="isLoggedIn"
-    (click)="onLogout()"
-  >
+  <button class="btn btn-sm btn-outline-primary text-light" *ngIf="isLoggedIn" (click)="onLogout()">
     Logout
   </button>
 </nav>
 <router-outlet></router-outlet>
+<app-chat *ngIf="isLoggedIn"></app-chat>

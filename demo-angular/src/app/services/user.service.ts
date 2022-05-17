@@ -69,4 +69,8 @@ export class UserService {
       observe: 'events'
     });
   }
+
+  getUserDetails() {
+    return JSON.parse(localStorage.getItem('u') || '{}')
+  }
 }

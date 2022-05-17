@@ -36,16 +36,16 @@ input {
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: white;
+  color: lightgray;
   opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: white;
+  color: lightgray;
 }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-  color: white;
+  color: lightgray;
 }
 
 // .table-container {
