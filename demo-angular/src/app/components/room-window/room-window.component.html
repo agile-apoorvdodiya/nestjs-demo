@@ -11,8 +11,10 @@
         {{room.name}}
       </div>
       <div>
-        <button class="btn" (click)="toggleWindow()"><i class="fa fa-caret-down"></i></button>
-        <button class="btn" (click)="closeWindow()"><i class="fa fa-times"></i></button>
+        <button title="Exit group" class="btn" (click)="onExitRoom()"><i
+            class="fa fa-arrow-right-from-bracket"></i></button>
+        <button title="Minimize" class="btn" (click)="toggleWindow()"><i class="fa fa-caret-down"></i></button>
+        <button title="Close window" class="btn" (click)="closeWindow()"><i class="fa fa-times"></i></button>
       </div>
     </div>
     <div class="messages-container" #messageContainer>
@@ -22,7 +24,7 @@
           <div class="user">
             {{message?.sender?.name ? message?.sender?.name : (message?.sender === 'self' ? currentUser.name :
             message.name) }}
-             <!-- {{message | json}} -->
+            <!-- {{message | json}} -->
           </div>
           {{message.message}}
         </div>

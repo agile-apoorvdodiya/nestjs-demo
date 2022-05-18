@@ -88,6 +88,24 @@ export class SocketIoGateway {
     }
   }
 
+  @SubscribeMessage('exitRoom')
+  async exitRoom(client: Socket, payload: any) {
+    const user = await this.socketService.exitRoom(
+      payload.room,
+      payload.userId,
+    );
+    client.to(`room-${payload.room}`).emit('roomMessage', {
+      sender: payload.userId,
+      message: `${user.name} left`,
+      name: user.name,
+    });
+    this.socketService.addMessage({
+      sender: payload.userId,
+      message: `${user.name} left`,
+      room: payload.room,
+    });
+  }
+
   handleConnection(client: Socket, ...args: any[]) {
     // console.log(`Client connected: ${client.id}`, args);
   }

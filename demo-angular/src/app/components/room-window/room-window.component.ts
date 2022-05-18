@@ -80,4 +80,15 @@ export class RoomWindowComponent implements OnInit, AfterViewChecked {
       ).nativeElement.scrollHeight;
     } catch (err) {}
   }
+
+  onExitRoom() {
+    this.socketService.exitRoom({
+      room: this.room._id,
+      userId: this.currentUser._id,
+    });
+    this.closeEvent.emit({
+      exit: true,
+      room: this.room,
+    });
+  }
 }

@@ -6,6 +6,7 @@ export class SocketService {
   constructor(
     @Inject('MessageModel') private messageModel: Model<any>,
     @Inject('RoomModel') private roomModel: Model<any>,
+    @Inject('UserModel') private userModel: Model<any>,
   ) {}
   public onlineUsers = [];
 
@@ -87,6 +88,27 @@ export class SocketService {
           members: userId,
         })
         .lean();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async exitRoom(roomId: string, userId: string) {
+    try {
+      const res = await this.roomModel.updateOne(
+        {
+          _id: roomId,
+        },
+        {
+          $pull: {
+            members: userId,
+          },
+        },
+      );
+      if (res.modifiedCount > 0) {
+        return this.userModel.findById(userId);
+      }
+      return null;
     } catch (error) {
       console.log(error);
     }

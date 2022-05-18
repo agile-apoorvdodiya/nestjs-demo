@@ -67,4 +67,10 @@ export class SocketService {
     this.socket.emit('createRoom', payload);
     return this.socket.fromEvent('roomCreated');
   }
+
+  exitRoom(payload: any) {
+    console.log(345);
+    
+    this.socket.emit('exitRoom', payload);
+  }
 }
