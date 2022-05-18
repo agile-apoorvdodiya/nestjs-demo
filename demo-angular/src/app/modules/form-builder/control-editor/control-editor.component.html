@@ -28,7 +28,7 @@
 							</div>
 						</td>
 					</tr>
-					<tr *ngIf="formValue.type === 'text' || formValue.type === 'password' ">
+					<tr *ngIf="formValue.type === 'text' || formValue.type === 'email' || formValue.type === 'password' || formValue.type === 'number' ">
 						<td>placeholder</td>
 						<td>
 							<div>
@@ -39,7 +39,7 @@
 					<ng-container *ngIf="formValue?.type === 'radio' || formValue?.type === 'checkbox'">
 						<tr>
 							<td>Controls</td>
-							<td><button class="btn btn-sm" (click)="addControl()"><i class="fa fa-plus"></i></button>
+							<td><button class="btn btn-sm text-light" (click)="addControl()"><i class="fa fa-plus"></i></button>
 							</td>
 						</tr>
 						<tr *ngFor="let control of getControlsArray(); let i = index" [formGroup]="control">
@@ -54,15 +54,15 @@
 									<input type="text" formControlName="value" placeholder="Value">
 								</div>
 							</td>
-							<td><button class="btn btn-sm" (click)="deleteControl(i)">
+							<td><button class="btn btn-sm text-light" (click)="deleteControl(i)">
 									<i class="fa fa-trash"></i></button></td>
 						</tr>
 					</ng-container>
 				</table>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" (click)="onSave()">Save</button>
-				<button type="button" class="btn btn-default" (click)="onCloseHandled()">Close</button>
+				<button type="button" class="btn btn-outline-primary text-light" (click)="onSave()">Save</button>
+				<button type="button" class="btn btn-outline-primary text-light" (click)="onCloseHandled()">Close</button>
 			</div>
 		</div>
 	</div>

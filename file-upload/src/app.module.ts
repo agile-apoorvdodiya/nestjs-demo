@@ -5,6 +5,10 @@ import { UserMiddleware } from 'middlewares/user.middleware';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from '../src/strategies/jwt.strategies';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -12,9 +16,13 @@ import { ConfigModule } from '@nestjs/config';
     MulterModule.register({
       dest: 'uploads',
     }),
+    PassportModule,
+    JwtModule.register({
+      secret: 'secret from env',
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [JwtStrategy, AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

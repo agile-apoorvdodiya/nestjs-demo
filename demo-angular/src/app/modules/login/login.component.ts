@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
     private userService: UserService
   ) {
     if (userService.isLoggedIn) {
-      history.back();
+      // history.back();
+      this.router.navigateByUrl('/users')
     }
     this.loginForm = fb.group({
       email: ['', Validators.required],

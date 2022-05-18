@@ -1,30 +1,20 @@
 <div class="container">
   <div class="row" cdkDropListGroup>
-    <div class="col-6 mt-4">
-      <div class="display-4">Controls</div>
+    <div class="col-2 me-4 mt-4">
+      <div class="display-4 mb-2">Controls</div>
       <div class="controls-container" cdkDropList [cdkDropListData]="controls" class="drop-list"
         (cdkDropListDropped)="move($event)">
         <div class="list-item" *ngFor="let item of controls" cdkDrag>
-          <div class="control-container" *ngIf="!['checkbox', 'radio'].includes(item.type)">
-            <div class="type-label">
-              <label for="">{{ item.labelView }}</label>
-            </div>
-            <div class="control-editor">
-              <input class="" [type]="item.type" />
-            </div>
-          </div>
-          <div class="control-container" *ngIf="['checkbox', 'radio'].includes(item.type)">
-            <div class="type-label">
-              <label for="">{{ item.labelView }}</label>
-            </div>
-            <div class="control-editor">
-              <input [type]="item.type" />
+          <div class="control-pick-container">
+            <div class="label">
+              {{ item.labelView }}
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-6 mt-4" [formGroup]="form">
+    <div class="col-9 mt-4" [formGroup]="form">
+      <div class="display-4 mb-2">{{formId ? 'Edit' : 'Create'}} Form</div>
       <div class="d-flex justify-content-between">
         <h4 class="">
           <input type="text" name="title" id="title" formControlName="title" placeholder="Enter form title" />
@@ -32,7 +22,7 @@
             title</small>
         </h4>
         <div>
-          <button class="btn btn-sm btn-outline-primary" (click)="onSave()">Save Form</button>
+          <button class="btn btn-sm btn-outline-primary text-light" (click)="onSave()">Save Form</button>
         </div>
       </div>
       <div id="selected-container" cdkDropList [cdkDropListData]="selected" class="drop-list"
@@ -41,13 +31,13 @@
           <div class="control-container" *ngIf="!['checkbox', 'radio'].includes(item.type)" [formGroupName]="i">
             <div class="type-label">
               <label for="">{{ getControl(i).controls['label']?.value }}</label>
-              <small class="d-block">{{item.type}}</small>
             </div>
             <div class="control-editor">
               <input [type]="item.type" [placeholder]="getControl(i).controls['placeholder']?.value || ''" />
             </div>
-             <div class="edit-button">
-              <button class="btn btn-sm" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
+            <div class="edit-button">
+              <button class="btn btn-sm text-light" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
+              <button class="btn btn-sm text-light ms-1" (click)="onDeleteControl(i)"><i class="fa fa-trash"></i></button>
             </div>
           </div>
           <div class="control-container" *ngIf="['checkbox', 'radio'].includes(item.type)" formGroupName="{{ i }}">
@@ -55,21 +45,21 @@
               <label for="">{{ getControl(i).controls['label']?.value }}</label>
             </div>
             <div class="control-editor">
-              {{item.type}}
               <table class="table">
                 <tr *ngFor="let control of getControlArray(i)">
                   <td>
                     <input [type]="item.type">
                   </td>
                   <td>
-                    <label>{{control.controls['label'].value}}</label>
+                    <label class="p-0">{{control.controls['label'].value}}</label>
                   </td>
 
                 </tr>
               </table>
             </div>
             <div class="edit-button">
-              <button class="btn btn-sm" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
+              <button class="btn btn-sm text-light" (click)="onEditControl(i)"><i class="fa fa-pencil"></i></button>
+              <button class="btn btn-sm text-light ms-1" (click)="onDeleteControl(i)"><i class="fa fa-trash"></i></button>
             </div>
           </div>
         </div>

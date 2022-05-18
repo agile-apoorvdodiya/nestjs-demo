@@ -81,13 +81,19 @@ export class AppService {
         password: userData.password,
       })
       .lean();
+
     return user
       ? {
           token: this.jwtService.sign({
-            id: user._id,
+            _id: user._id,
             email: user.email,
             admin: user.admin,
+            name: user.name,
           }),
+          _id: user._id,
+          email: user.email,
+          admin: user.admin,
+          name: user.name,
         }
       : null;
   }

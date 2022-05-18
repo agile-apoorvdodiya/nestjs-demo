@@ -19,6 +19,12 @@ import { FormBuilderSchema } from './schema/form';
         connection.model('FormBuilderModel', FormBuilderSchema),
       inject: ['DB_CONNECTION'],
     },
+    {
+      provide: 'FormSubmitModel',
+      useFactory: (connection: mongoose.Connection) =>
+        connection.model('FormSubmitModel', FormBuilderSchema),
+      inject: ['DB_CONNECTION'],
+    },
   ],
   controllers: [FormBuilderController],
 })

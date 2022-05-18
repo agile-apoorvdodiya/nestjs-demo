@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { from } from 'rxjs';
+import { SocketService } from './services/socket.service';
 import { UserService } from './services/user.service';
 
 @Component({
@@ -10,9 +11,17 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent {
   isLoggedIn = false;
-  constructor(private userService: UserService, private router: Router) {
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private socketService: SocketService
+  ) {
     this.userService.isLoggedIn.subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
+      console.log(isLoggedIn);
+
+      if (isLoggedIn) socketService.setStatus();
+      else socketService.disconnect();
     });
   }
   title = 'demo-angular';

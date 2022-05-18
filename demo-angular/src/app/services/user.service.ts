@@ -36,8 +36,8 @@ export class UserService {
     return this.http.post(`${this.baseUrl}/login`, data).pipe(
       tap((res: any) => {
         if (res?.success) {
-          this.isLoggedIn.next(true);
           localStorage.setItem('u', JSON.stringify(res.user));
+          this.isLoggedIn.next(true);
         }
       })
     );
@@ -66,7 +66,11 @@ export class UserService {
   uploadUserDoc(id: string, data: any) {
     return this.http.post(`${this.uploadBaseUrl}/upload/${id}`, data, {
       reportProgress: true,
-      observe: 'events'
+      observe: 'events',
     });
+  }
+
+  getUserDetails() {
+    return JSON.parse(localStorage.getItem('u') || '{}');
   }
 }

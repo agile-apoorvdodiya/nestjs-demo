@@ -12,30 +12,18 @@ export class UserMiddleware implements NestMiddleware {
   constructor(private http: HttpService) {}
 
   async use(req: any, res: any, next: () => void) {
-    console.log(req.headers);
-    
-    if (!req.headers['authorization']) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          message: 'Token not provided',
-          success: false,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
     try {
-      const response = await firstValueFrom(
-        this.http.get(`${process.env.USER_SERVICE_URL}/users/${req.params['id']}`, {
-          headers: {
-            authorization: req.headers['authorization'],
+      const response: any = await firstValueFrom(
+        this.http.get(
+          `${process.env.USER_SERVICE_URL}/users/${req.params['id']}`,
+          {
+            headers: {
+              authorization: req.headers['authorization'],
+            },
           },
-        }),
+        ),
       );
     } catch (err) {
-      console.log(err);
-      
       throw new HttpException(
         {
           data: err?.response?.data,

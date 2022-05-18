@@ -8,9 +8,12 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { FormBuilderModule } from './module/form-builder/form-builder.module';
 import { ConfigModule } from '@nestjs/config';
+import { SocketIoGateway } from './socket/socket-io.gateway';
+import { SocketModule } from './module/socket/socket.module';
 
 @Module({
   imports: [
+    SocketModule,
     ConfigModule.forRoot(),
     FormBuilderModule,
     PassportModule,

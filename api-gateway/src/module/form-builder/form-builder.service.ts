@@ -5,11 +5,30 @@ import { Model } from 'mongoose';
 export class FormBuilderService {
   constructor(
     @Inject('FormBuilderModel') private formBuilderModel: Model<any>,
+    @Inject('FormSubmitModel') private formSubmitModel: Model<any>,
   ) {}
 
   async createForm(formData: any) {
     try {
       const form = await this.formBuilderModel.create([formData]);
+      return form;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async updateForm(formData: any, id: string) {
+    try {
+      const form = await this.formBuilderModel.updateOne({ _id: id }, formData);
+      return form;
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async submitForm(formData: any) {
+    try {
+      const form = await this.formSubmitModel.create([formData]);
       return form;
     } catch (err) {
       return err;
@@ -31,6 +50,15 @@ export class FormBuilderService {
       return deleteForm;
     } catch (err) {
       return err;
+    }
+  }
+
+  async getFormById(id: string) {
+    try {
+      const form = await this.formBuilderModel.findById(id);
+      return form;
+    } catch (err) {
+      throw err;
     }
   }
 }

@@ -5,6 +5,7 @@ import {
   Post,
   Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -22,6 +23,7 @@ import { ErrorResponseDto } from 'dto/errorResponseDto';
 import { SuccessResponseDto } from 'dto/successResponseDto';
 import { diskStorage } from 'multer';
 import { AppService } from './app.service';
+import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 
 const storageOptions = {
   storage: diskStorage({
@@ -34,6 +36,7 @@ const storageOptions = {
   }),
 };
 
+@UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 @Controller()
 export class AppController {
@@ -55,7 +58,7 @@ export class AppController {
     name: 'authorization',
     description: 'jwt token for authorization',
   })
-@ApiParam({ name: 'id', type: String })
+  @ApiParam({ name: 'id', type: String })
   @ApiUnauthorizedResponse({ type: ErrorResponseDto })
   @ApiNotFoundResponse({ type: ErrorResponseDto })
   @ApiOkResponse({ type: SuccessResponseDto })
