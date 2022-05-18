@@ -19,7 +19,10 @@ export class ChatComponent implements OnInit {
   onlineUsers: IChatUser[] = [];
   drawerOpen = true;
   currentUserDetails: IUser = {};
-  chatWindow: IChatUser[] = [];
+  chatWindow: any[] = [];
+  roomChatWindow: any[] = [];
+  rooms: any[] = [];
+  createRoomModal = false;
   constructor(
     private socketService: SocketService,
     private userService: UserService
@@ -27,10 +30,13 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUserDetails = this.userService.getUserDetails();
-
+    this.getRooms();
     this.socketService.getOnlineUsers().subscribe((res: any[]) => {
-      console.log(res);
       this.onlineUsers = res;
+      this.chatWindow.forEach((window) => {
+        const user = this.onlineUsers.find((user) => user.id === window.id);
+        window.socketId = user?.socketId || window.socketId;
+      });
     });
   }
 
@@ -38,9 +44,28 @@ export class ChatComponent implements OnInit {
     this.drawerOpen = !this.drawerOpen;
   }
 
-  onUserClick(user: IChatUser) {
+  toggleCreateRoom() {
+    this.createRoomModal = !this.createRoomModal;
+  }
+
+  handleCloseCreateRoom(data: any) {
+    this.createRoomModal = false;
+    if (data?.close && data?.close) {
+      this.getRooms();
+    }
+  }
+
+  onAddRoom() {
+    this.createRoomModal = true;
+  }
+
+  onItemClick(user: IChatUser, type: 'room' | 'user') {
     if (user.isWindowOpen !== true) {
-      this.chatWindow.push(user);
+      // if (type === 'room') {
+
+      // } else {
+      // }
+      this.chatWindow.push({ ...user, type });
       user.isWindowOpen = true;
     }
   }
@@ -58,5 +83,13 @@ export class ChatComponent implements OnInit {
         if (user?.isWindowOpen) user.isWindowOpen = false;
       }
     }
+  }
+
+  getRooms() {
+    this.socketService
+      .getRooms(this.currentUserDetails?._id || '')
+      .subscribe((res: any) => {
+        this.rooms = res;
+      });
   }
 }

@@ -18,8 +18,6 @@ export class AppComponent {
   ) {
     this.userService.isLoggedIn.subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
-      console.log(isLoggedIn);
-
       if (isLoggedIn) socketService.setStatus();
       else socketService.disconnect();
     });

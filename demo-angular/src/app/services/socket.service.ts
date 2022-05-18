@@ -10,8 +10,6 @@ export class SocketService {
 
   // called when connected once
   setStatus() {
-    console.log('setting');
-    
     this.socket.connect();
     const userDetails: Partial<IUser> = this.userService.getUserDetails();
     this.socket.emit('setStatus', {
@@ -32,8 +30,23 @@ export class SocketService {
     this.socket.emit('messageTo', payload);
   }
 
+  sendMessageInRoom(payload: any) {
+    console.log(payload);
+
+    this.socket.emit('messageToRoom', payload);
+  }
+
   getMessages() {
     return this.socket.fromEvent('privateMessage');
+  }
+
+  getRoomMessages() {
+    return this.socket.fromEvent('roomMessage');
+  }
+
+  getRooms(id: string) {
+    this.socket.emit('getAllRooms', { userId: id });
+    return this.socket.fromEvent('roomsList');
   }
 
   getOlderMessages(to: string, from: string) {
@@ -42,5 +55,15 @@ export class SocketService {
       to,
     });
     return this.socket.fromEvent('messageHistory');
+  }
+
+  getOlderRoomMessages(room: string) {
+    this.socket.emit('getRoomMessages', { room });
+    return this.socket.fromEvent('roomMessageHistory');
+  }
+
+  createRoom(payload: any) {
+    this.socket.emit('createRoom', payload);
+    return this.socket.fromEvent('roomCreated');
   }
 }

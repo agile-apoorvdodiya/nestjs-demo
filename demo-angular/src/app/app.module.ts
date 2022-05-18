@@ -9,8 +9,10 @@ import { SocketIoModule } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatWindowComponent } from './components/chat-window/chat-window.component';
+import { AddRoomComponent } from './components/add-room/add-room.component';
+import { RoomWindowComponent } from './components/room-window/room-window.component';
 @NgModule({
-  declarations: [AppComponent, ChatComponent, ChatWindowComponent],
+  declarations: [AppComponent, ChatComponent, ChatWindowComponent, AddRoomComponent, RoomWindowComponent],
   imports: [
     SocketIoModule.forRoot({
       url: environment.apiUrl,

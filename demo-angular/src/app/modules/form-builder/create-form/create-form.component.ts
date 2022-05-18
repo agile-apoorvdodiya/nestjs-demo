@@ -225,8 +225,6 @@ export class CreateFormComponent implements OnInit {
   getFormData() {
     this.formBuilderService.getForm(this.formId).subscribe(
       (res: any) => {
-        console.log(res);
-
         this.createFormFromValue(res.form);
       },
       (err) => {

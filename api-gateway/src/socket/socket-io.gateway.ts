@@ -17,8 +17,6 @@ export class SocketIoGateway {
 
   @SubscribeMessage('setStatus')
   setStatus(client: Socket, payload: any) {
-    console.log(payload);
-    
     this.socketService.onlineUsers.push({
       socketId: client.id,
       id: payload.id,
@@ -48,8 +46,51 @@ export class SocketIoGateway {
     client.emit('messageHistory', messages);
   }
 
+  @SubscribeMessage('getRoomMessages')
+  async getRoomMessages(client: Socket, payload: any) {
+    const messages = await this.socketService.getRoomMessages(payload.room);
+    client.emit('roomMessageHistory', messages);
+  }
+
+  @SubscribeMessage('messageToRoom')
+  sendToRoom(client: Socket, payload: any) {
+    client.to(`room-${payload.room}`).emit('roomMessage', {
+      from: client.id,
+      name: payload.name,
+      message: payload.message,
+    });
+    this.socketService.addMessage(payload);
+  }
+
+  @SubscribeMessage('getAllRooms')
+  async getAllRooms(client: Socket, payload: any) {
+    const rooms = await this.socketService.getAllRooms(payload.userId);
+
+    for (const room of rooms) {
+      await client.join(`room-${room._id?.toString()}`);
+    }
+    client.emit('roomsList', rooms);
+  }
+
+  @SubscribeMessage('createRoom')
+  async createRoom(client: Socket, payload: any) {
+    const room = await this.socketService.createRoom(payload);
+    if (room._id) {
+      // client.join(room._id);
+      client.emit('roomCreated', {
+        message: 'Created room successfully',
+        success: true,
+      });
+    } else {
+      client.emit('roomCreated', {
+        message: 'Something went wrong',
+        success: false,
+      });
+    }
+  }
+
   handleConnection(client: Socket, ...args: any[]) {
-    console.log(`Client connected: ${client.id}`, args);
+    // console.log(`Client connected: ${client.id}`, args);
   }
 
   handleDisconnect(client: Socket, ...args: any[]) {

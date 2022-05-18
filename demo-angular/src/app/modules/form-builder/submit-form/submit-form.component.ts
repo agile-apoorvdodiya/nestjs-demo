@@ -38,7 +38,6 @@ export class SubmitFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form?.value);
     this.formBuilderService
       .submitForm({
         id: this.formId,

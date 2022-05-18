@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import mongoose from 'mongoose';
+import { UserSchema } from 'src/schema/user';
 import { SocketIoGateway } from 'src/socket/socket-io.gateway';
 import { MessagesSchema } from './schema/messages';
+import { RoomSchema } from './schema/room';
 import { SocketService } from './socket.service';
 
 @Module({
@@ -20,6 +22,18 @@ import { SocketService } from './socket.service';
         connection.model('MessageModel', MessagesSchema),
       inject: ['DB_CONNECTION'],
     },
+    {
+      provide: 'RoomModel',
+      useFactory: (connection: mongoose.Connection) =>
+        connection.model('RoomModel', RoomSchema),
+      inject: ['DB_CONNECTION'],
+    },
+    {
+      provide: 'UserModel',
+      useFactory: (connection: mongoose.Connection) =>
+        connection.model('UserModel', UserSchema),
+      inject: ['DB_CONNECTION'],
+    }
   ],
 })
 export class SocketModule {}

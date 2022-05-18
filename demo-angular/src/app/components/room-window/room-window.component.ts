@@ -8,23 +8,21 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { SocketService } from 'src/app/services/socket.service';
 import { IUser, UserService } from 'src/app/services/user.service';
-import { IChatUser } from '../chat/chat.component';
 
 @Component({
-  selector: 'app-chat-window',
-  templateUrl: './chat-window.component.html',
-  styleUrls: ['./chat-window.component.scss'],
+  selector: 'app-room-window',
+  templateUrl: './room-window.component.html',
+  styleUrls: ['./room-window.component.scss'],
 })
-export class ChatWindowComponent implements OnInit, AfterViewChecked {
-  @Input('user') chatUser: Partial<IChatUser> = {};
+export class RoomWindowComponent implements OnInit, AfterViewChecked {
+  @Input('currentUser') currentUser: Partial<IUser> = {};
+  @Input('room') room: any = {};
   @Output('close') closeEvent: EventEmitter<any> = new EventEmitter();
   expanded = true;
   messages: any[] = [];
   textBox = '';
-  currentUser: Partial<IUser> = {};
   @ViewChild('messageContainer') private messageContainer: ElementRef | null = null;
 
   constructor(
@@ -33,8 +31,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit(): void {
-    this.currentUser = this.userService.getUserDetails();
-    this.subscribeMessage();
+    console.log(this.room);
+    this.subscribeToMessages();
   }
 
   toggleWindow() {
@@ -42,7 +40,16 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   }
 
   closeWindow() {
-    this.closeEvent.emit({ close: true, user: this.chatUser });
+    this.closeEvent.emit({ close: true, user: this.room });
+  }
+
+  subscribeToMessages() {
+    this.socketService.getOlderRoomMessages(this.room._id).subscribe((res) => {
+      this.messages = res as any[];
+    });
+    this.socketService.getRoomMessages().subscribe((message) => {
+      this.messages.push(message);
+    });
   }
 
   onSend() {
@@ -51,27 +58,13 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
         message: this.textBox,
         sender: 'self',
       });
-      this.socketService.sendMessage({
-        to: this.chatUser.socketId,
+      this.socketService.sendMessageInRoom({
+        room: this.room._id,
         message: this.textBox,
-        receiver: this.chatUser.id,
         sender: this.currentUser._id,
       });
       this.textBox = '';
     }
-  }
-
-  subscribeMessage() {
-    this.socketService
-      .getOlderMessages(this.chatUser.id || '', this.currentUser._id || '')
-      .subscribe((res) => {
-        console.log(res);
-
-        this.messages = res as any[];
-      });
-    this.socketService.getMessages().subscribe((message: any) => {
-      if (message.from === this.chatUser.socketId) this.messages.push(message);
-    });
   }
 
   ngAfterViewChecked() {

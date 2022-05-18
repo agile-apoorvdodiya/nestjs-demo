@@ -3,19 +3,45 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class SocketService {
-  constructor(@Inject('MessageModel') private messageModel: Model<any>) {}
+  constructor(
+    @Inject('MessageModel') private messageModel: Model<any>,
+    @Inject('RoomModel') private roomModel: Model<any>,
+  ) {}
   public onlineUsers = [];
 
   async addMessage(message: any) {
     try {
-      if (message?.sender && message?.receiver) {
+      if (
+        (message?.room && message?.message && message?.sender) ||
+        (message?.room && message?.sender && message?.receiver)
+      ) {
         const res = await this.messageModel.create({
           sender: message.sender,
           receiver: message.receiver,
           message: message.message,
+          room: message.room,
           createdAt: new Date(),
         });
       }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async createRoom(roomData: any) {
+    try {
+      if (roomData?.name && roomData?.createdBy) {
+        const res = await this.roomModel.create({
+          name: roomData.name,
+          createdBy: roomData.createdBy,
+          members: [roomData.createdBy],
+          createdAt: new Date(),
+        });
+        console.log(' > ', res);
+
+        return res;
+      }
+      return null;
     } catch (error) {
       console.log(error);
     }
@@ -37,6 +63,30 @@ export class SocketService {
           ],
         });
       }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getRoomMessages(room: string) {
+    try {
+      return await this.messageModel
+        .find({
+          room,
+        })
+        .populate({ path: 'sender', select: 'name' });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async getAllRooms(userId: string) {
+    try {
+      return await this.roomModel
+        .find({
+          members: userId,
+        })
+        .lean();
     } catch (error) {
       console.log(error);
     }
