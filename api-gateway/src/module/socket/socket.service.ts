@@ -34,7 +34,7 @@ export class SocketService {
         const res = await this.roomModel.create({
           name: roomData.name,
           createdBy: roomData.createdBy,
-          members: [roomData.createdBy],
+          members: [roomData.createdBy, ...(roomData?.members || [])],
           createdAt: new Date(),
         });
         console.log(' > ', res);

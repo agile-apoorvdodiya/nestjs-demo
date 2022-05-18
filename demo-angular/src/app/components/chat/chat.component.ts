@@ -82,7 +82,20 @@ export class ChatComponent implements OnInit {
         );
         if (user?.isWindowOpen) user.isWindowOpen = false;
       }
+    } else if (data?.close && data?.room?._id) {
+      const index = this.chatWindow.findIndex(
+        (window) => window?._id === data.room._id
+      );
+      if (index > -1) {
+        this.chatWindow.splice(index, 1);
+        const room = this.rooms.find(
+          (room) => room._id === data.room._id
+        );
+        if (room?.isWindowOpen) room.isWindowOpen = false;
+      }
     }
+    console.log(this.chatWindow);
+    
   }
 
   getRooms() {

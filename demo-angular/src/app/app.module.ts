@@ -11,14 +11,22 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ChatWindowComponent } from './components/chat-window/chat-window.component';
 import { AddRoomComponent } from './components/add-room/add-room.component';
 import { RoomWindowComponent } from './components/room-window/room-window.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 @NgModule({
-  declarations: [AppComponent, ChatComponent, ChatWindowComponent, AddRoomComponent, RoomWindowComponent],
+  declarations: [
+    AppComponent,
+    ChatComponent,
+    ChatWindowComponent,
+    AddRoomComponent,
+    RoomWindowComponent,
+  ],
   imports: [
+    NgSelectModule,
     SocketIoModule.forRoot({
       url: environment.apiUrl,
       options: {
         transports: ['websocket'],
-        autoConnect: false
+        autoConnect: false,
       },
     }),
     BrowserModule,

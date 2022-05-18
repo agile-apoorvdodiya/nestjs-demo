@@ -23,7 +23,8 @@ export class RoomWindowComponent implements OnInit, AfterViewChecked {
   expanded = true;
   messages: any[] = [];
   textBox = '';
-  @ViewChild('messageContainer') private messageContainer: ElementRef | null = null;
+  @ViewChild('messageContainer') private messageContainer: ElementRef | null =
+    null;
 
   constructor(
     private socketService: SocketService,
@@ -40,7 +41,7 @@ export class RoomWindowComponent implements OnInit, AfterViewChecked {
   }
 
   closeWindow() {
-    this.closeEvent.emit({ close: true, user: this.room });
+    this.closeEvent.emit({ close: true, room: this.room });
   }
 
   subscribeToMessages() {
@@ -62,6 +63,7 @@ export class RoomWindowComponent implements OnInit, AfterViewChecked {
         room: this.room._id,
         message: this.textBox,
         sender: this.currentUser._id,
+        name: this.currentUser.name,
       });
       this.textBox = '';
     }

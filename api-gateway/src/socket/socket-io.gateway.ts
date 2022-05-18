@@ -76,7 +76,6 @@ export class SocketIoGateway {
   async createRoom(client: Socket, payload: any) {
     const room = await this.socketService.createRoom(payload);
     if (room._id) {
-      // client.join(room._id);
       client.emit('roomCreated', {
         message: 'Created room successfully',
         success: true,

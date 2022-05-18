@@ -25,7 +25,8 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
   messages: any[] = [];
   textBox = '';
   currentUser: Partial<IUser> = {};
-  @ViewChild('messageContainer') private messageContainer: ElementRef | null = null;
+  @ViewChild('messageContainer') private messageContainer: ElementRef | null =
+    null;
 
   constructor(
     private socketService: SocketService,

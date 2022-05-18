@@ -40,6 +40,15 @@ export class SocketService {
     return this.socket.fromEvent('privateMessage');
   }
 
+  getOlderMessages(to: string, from: string) {
+    this.socket.emit('getMessages', {
+      from,
+      to,
+    });
+    return this.socket.fromEvent('messageHistory');
+  }
+
+  //  === room services ===
   getRoomMessages() {
     return this.socket.fromEvent('roomMessage');
   }
@@ -47,14 +56,6 @@ export class SocketService {
   getRooms(id: string) {
     this.socket.emit('getAllRooms', { userId: id });
     return this.socket.fromEvent('roomsList');
-  }
-
-  getOlderMessages(to: string, from: string) {
-    this.socket.emit('getMessages', {
-      from,
-      to,
-    });
-    return this.socket.fromEvent('messageHistory');
   }
 
   getOlderRoomMessages(room: string) {
