@@ -31,8 +31,6 @@ export class SocketService {
   }
 
   sendMessageInRoom(payload: any) {
-    console.log(payload);
-
     this.socket.emit('messageToRoom', payload);
   }
 
@@ -69,8 +67,18 @@ export class SocketService {
   }
 
   exitRoom(payload: any) {
-    console.log(345);
-    
     this.socket.emit('exitRoom', payload);
+  }
+
+  checkNewRoom() {
+    return this.socket.fromEvent('newRoom');
+  }
+
+  joinRoom(room: string) {
+    this.socket.emit('joinRoom', { room });
+  }
+  
+  leaveRoom(room: string) {
+    this.socket.emit('leaveRoom', { room });
   }
 }

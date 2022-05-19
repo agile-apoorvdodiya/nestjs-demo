@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserDetails = this.userService.getUserDetails();
     this.getRooms();
+    this.checkNewRoom();
     this.socketService.getOnlineUsers().subscribe((res: any[]) => {
       this.onlineUsers = res;
       this.chatWindow.forEach((window) => {
@@ -112,5 +113,11 @@ export class ChatComponent implements OnInit {
       .subscribe((res: any) => {
         this.rooms = res;
       });
+  }
+
+  checkNewRoom() {
+    this.socketService.checkNewRoom().subscribe((room) => {
+      this.rooms.push(room);
+    });
   }
 }

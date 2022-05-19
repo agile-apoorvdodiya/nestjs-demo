@@ -66,16 +66,31 @@ export class SocketIoGateway {
   async getAllRooms(client: Socket, payload: any) {
     const rooms = await this.socketService.getAllRooms(payload.userId);
 
-    for (const room of rooms) {
-      await client.join(`room-${room._id?.toString()}`);
-    }
+    // for (const room of rooms) {
+    //   await client.join(`room-${room._id?.toString()}`);
+    // }
     client.emit('roomsList', rooms);
+  }
+
+  @SubscribeMessage('joinRoom')
+  async joinRoom(client: Socket, payload: any) {
+    await client.join(`room-${payload.room}`);
+  }
+
+  @SubscribeMessage('leaveRoom')
+  async leaveRoom(client: Socket, payload: any) {
+    await client.leave(`room-${payload.room}`);
   }
 
   @SubscribeMessage('createRoom')
   async createRoom(client: Socket, payload: any) {
     const room = await this.socketService.createRoom(payload);
     if (room._id) {
+      this.socketService.onlineUsers.forEach((user) => {
+        if (room?.members?.map((id) => id?.toString())?.includes(user.id)) {
+          client.to(user.socketId).emit('newRoom', room);
+        }
+      });
       client.emit('roomCreated', {
         message: 'Created room successfully',
         success: true,

@@ -39,7 +39,6 @@ export class AddRoomComponent implements OnInit {
           members: this.selectedUsers,
         })
         .subscribe((res) => {
-          console.log(res);
           this.closeEvent.emit({
             save: true,
             close: true,

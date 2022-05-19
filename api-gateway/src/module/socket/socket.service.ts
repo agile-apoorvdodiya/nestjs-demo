@@ -8,7 +8,7 @@ export class SocketService {
     @Inject('RoomModel') private roomModel: Model<any>,
     @Inject('UserModel') private userModel: Model<any>,
   ) {}
-  public onlineUsers = [];
+  public onlineUsers: any[] = [];
 
   async addMessage(message: any) {
     try {
@@ -38,8 +38,6 @@ export class SocketService {
           members: [roomData.createdBy, ...(roomData?.members || [])],
           createdAt: new Date(),
         });
-        console.log(' > ', res);
-
         return res;
       }
       return null;

@@ -4,6 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -16,7 +17,9 @@ import { IUser, UserService } from 'src/app/services/user.service';
   templateUrl: './room-window.component.html',
   styleUrls: ['./room-window.component.scss'],
 })
-export class RoomWindowComponent implements OnInit, AfterViewChecked {
+export class RoomWindowComponent
+  implements OnInit, AfterViewChecked, OnDestroy
+{
   @Input('currentUser') currentUser: Partial<IUser> = {};
   @Input('room') room: any = {};
   @Output('close') closeEvent: EventEmitter<any> = new EventEmitter();
@@ -25,6 +28,7 @@ export class RoomWindowComponent implements OnInit, AfterViewChecked {
   textBox = '';
   @ViewChild('messageContainer') private messageContainer: ElementRef | null =
     null;
+  messageSubscription: any = null;
 
   constructor(
     private socketService: SocketService,
@@ -32,7 +36,7 @@ export class RoomWindowComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.room);
+    this.socketService.joinRoom(this.room._id);
     this.subscribeToMessages();
   }
 
@@ -48,9 +52,11 @@ export class RoomWindowComponent implements OnInit, AfterViewChecked {
     this.socketService.getOlderRoomMessages(this.room._id).subscribe((res) => {
       this.messages = res as any[];
     });
-    this.socketService.getRoomMessages().subscribe((message) => {
-      this.messages.push(message);
-    });
+    this.messageSubscription = this.socketService
+      .getRoomMessages()
+      .subscribe((message) => {
+        this.messages.push(message);
+      });
   }
 
   onSend() {
@@ -90,5 +96,10 @@ export class RoomWindowComponent implements OnInit, AfterViewChecked {
       exit: true,
       room: this.room,
     });
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.leaveRoom(this.room._id);
+    this.messageSubscription?.unsubscribe();
   }
 }

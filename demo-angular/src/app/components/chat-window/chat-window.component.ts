@@ -66,7 +66,6 @@ export class ChatWindowComponent implements OnInit, AfterViewChecked {
     this.socketService
       .getOlderMessages(this.chatUser.id || '', this.currentUser._id || '')
       .subscribe((res) => {
-        console.log(res);
 
         this.messages = res as any[];
       });
