@@ -1,6 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+// TODO add validations
 export class UserRequestDto {
+  @ApiProperty()
+  id: String;
+
   @ApiProperty()
   email: String;
 

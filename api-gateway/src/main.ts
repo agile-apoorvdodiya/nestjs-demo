@@ -8,6 +8,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Users API')
+    .setDescription('User crud apis with realtime chat using socket io')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);

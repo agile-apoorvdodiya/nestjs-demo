@@ -10,6 +10,8 @@ import { FormBuilderModule } from './module/form-builder/form-builder.module';
 import { ConfigModule } from '@nestjs/config';
 import { SocketIoGateway } from './socket/socket-io.gateway';
 import { SocketModule } from './module/socket/socket.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
@@ -38,6 +40,10 @@ import { SocketModule } from './module/socket/socket.module';
         connection.model('UserModel', UserSchema),
       inject: ['DB_CONNECTION'],
     },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard
+    }
   ],
 })
 export class AppModule {}

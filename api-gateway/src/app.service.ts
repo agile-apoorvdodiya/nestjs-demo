@@ -1,80 +1,85 @@
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { Model, ObjectId } from 'mongoose';
 import { JwtService } from '@nestjs/jwt';
+import { httpErrors, response } from './common/errors';
+import { UserRequestDto } from './dto/userDto';
+import { LoginDto } from './dto/loginDto';
 
 @Injectable()
 export class AppService {
   constructor(
-    @Inject('UserModel') private userModel: Model<any>,
+    @Inject('UserModel') private userModel: Model<any>, // TODO fix this any
     private jwtService: JwtService,
   ) {}
 
-  getHello(): string {
-    return 'Hello World!';
-  }
-
-  getAllUser() {
-    return this.userModel.find();
+  async getAllUser() {
+    try {
+      const result = await this.userModel.find();
+      return response.list('Users list', result);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getUserById(id: string) {
-    const user = await this.userModel.findOne({
-      _id: id,
-    });
-
-    return user;
+    try {
+      const user = await this.userModel.findById(id);
+      if (!user) throw httpErrors.notFound('User not found');
+      return response.single('User details', user);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async updateUserById(data: any) {
+  async updateUserById(data: UserRequestDto) {
     try {
-      return await this.userModel.findOneAndUpdate(
-        {
-          _id: data?.id,
-        },
+      const result = await this.userModel.findOneAndUpdate(
+        { _id: data?.id },
         data,
         { new: true },
       );
-    } catch (err) {
-      throw new HttpException(
-        {
-          message:
-            err?.code === 11000
-              ? 'User already exists with same email'
-              : 'Internal server error',
-          error: err,
-          status: HttpStatus.BAD_REQUEST,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+
+      if (!result || result?.upsertedCount === 0) {
+        throw httpErrors.notFound('User not found');
+      }
+
+      return response.single('User updated successfully');
+    } catch (error) {
+      if (error?.code === 11000) {
+        throw httpErrors.badRequest('User already exists');
+      }
+      throw error;
     }
   }
 
-  deleteUserById(id: string) {
-    return this.userModel.deleteOne({
-      _id: id,
-    });
+  async deleteUserById(id: string) {
+    try {
+      const result = await this.userModel.deleteOne({
+        _id: id,
+      });
+      if (result.deletedCount === 0) {
+        throw httpErrors.notFound('User not found');
+      }
+      return response.single('User deleted successfully');
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async createUser(userData: any) {
+  async createUser(userData: UserRequestDto) {
     try {
       const newUser = await this.userModel.create([userData]);
-      return newUser;
-    } catch (err) {
-      throw new HttpException(
-        {
-          message:
-            err?.code === 11000
-              ? 'User already exists with same email'
-              : 'Internal server error',
-          error: err,
-          status: HttpStatus.BAD_REQUEST,
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+
+      return response.single('User created Successfully', newUser);
+    } catch (error) {
+      if (error?.code === 11000) {
+        throw httpErrors.badRequest('User already exists');
+      }
+      throw error;
     }
   }
 
-  async login(userData: any) {
+  async login(userData: LoginDto) {
     const user = await this.userModel
       .findOne({
         email: userData.email,
@@ -82,7 +87,11 @@ export class AppService {
       })
       .lean();
 
-    return user
+    if (!user) {
+      throw httpErrors.badRequest('Invalid credentials');
+    }
+
+    const data = user
       ? {
           token: this.jwtService.sign({
             _id: user._id,
@@ -96,5 +105,6 @@ export class AppService {
           name: user.name,
         }
       : null;
+    return response.single('User logged in successfully', data);
   }
 }
