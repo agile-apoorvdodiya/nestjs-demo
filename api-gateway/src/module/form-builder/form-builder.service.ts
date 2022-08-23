@@ -1,5 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
+import { httpErrors, response } from 'src/common/errors';
+import { CreateFormDto } from './dto/createFormDto';
 
 @Injectable()
 export class FormBuilderService {
@@ -8,19 +10,26 @@ export class FormBuilderService {
     @Inject('FormSubmitModel') private formSubmitModel: Model<any>,
   ) {}
 
-  async createForm(formData: any) {
+  async createForm(formData: CreateFormDto) {
     try {
-      const form = await this.formBuilderModel.create([formData]);
-      return form;
+      const newForm = await this.formBuilderModel.create([formData]);
+      return response.single('Created form successfully!', newForm);
     } catch (err) {
       return err;
     }
   }
 
-  async updateForm(formData: any, id: string) {
+  async updateForm(formData: CreateFormDto, id: string) {
     try {
-      const form = await this.formBuilderModel.updateOne({ _id: id }, formData);
-      return form;
+      const form = await this.formSubmitModel.findById(id).lean();
+
+      if (!form) {
+        httpErrors.notFound('Form not found!');
+      }
+
+      await this.formBuilderModel.updateOne({ _id: id }, formData);
+
+      return response.single('Form updated successfully!');
     } catch (err) {
       return err;
     }
@@ -28,8 +37,8 @@ export class FormBuilderService {
 
   async submitForm(formData: any) {
     try {
-      const form = await this.formSubmitModel.create([formData]);
-      return form;
+      await this.formSubmitModel.create([formData]);
+      return response.single('Form submitted successfully!');
     } catch (err) {
       return err;
     }
@@ -38,7 +47,7 @@ export class FormBuilderService {
   async getAllForms() {
     try {
       const forms = await this.formBuilderModel.find();
-      return forms;
+      return response.list('List of all forms', forms);
     } catch (err) {
       return err;
     }
@@ -46,8 +55,16 @@ export class FormBuilderService {
 
   async deleteFormById(id: string) {
     try {
+      const form = await this.formSubmitModel.findById(id);
+
+      if (!form) throw httpErrors.notFound('Form not found');
+
       const deleteForm = await this.formBuilderModel.deleteOne({ _id: id });
-      return deleteForm;
+      if (deleteForm.deletedCount) {
+        return response.single('form deleted successfully!');
+      } else {
+        throw httpErrors.serverError('Something went wrong!');
+      }
     } catch (err) {
       return err;
     }
@@ -55,8 +72,11 @@ export class FormBuilderService {
 
   async getFormById(id: string) {
     try {
-      const form = await this.formBuilderModel.findById(id);
-      return form;
+      const form = await this.formBuilderModel.findById(id).lean();
+      if (!form) {
+        throw httpErrors.notFound('Form not found!');
+      }
+      return response.single('Successfully fetched form', form);
     } catch (err) {
       throw err;
     }

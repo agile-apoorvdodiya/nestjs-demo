@@ -1,38 +1,23 @@
-// TODO removed unused imports
 import {
   Body,
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Post,
   Put,
-  Query,
-  Req,
-  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiParam,
-  ApiOkResponse,
-  ApiUnauthorizedResponse,
-  ApiBadRequestResponse,
-  ApiNotFoundResponse,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 import { AppService } from './app.service';
-import { JwtAuthGuard, Public } from './guards/auth.guard';
-import { ErrorResponseDto } from './dto/errorResponseDto';
-import { SuccessResponseDto } from './dto/successResponseDto';
 import { UserRequestDto } from './dto/userDto';
 import { LoginDto } from './dto/loginDto';
+import { Public } from './guards/auth.guard';
 
 @ApiBearerAuth()
+@ApiTags('users')
 @Controller('users')
 export class AppController {
   constructor(private readonly appService: AppService) {}

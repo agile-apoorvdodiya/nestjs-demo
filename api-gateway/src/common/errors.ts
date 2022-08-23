@@ -23,6 +23,17 @@ export const httpErrors = {
       HttpStatus.BAD_REQUEST,
     );
   },
+  serverError: (message: string = 'Server error', error: any = null) => {
+    return new HttpException(
+      {
+        success: false,
+        status: HttpStatus.INTERNAL_SERVER_ERROR,
+        message,
+        error: error || 'INTERNAL_SERVER_ERROR',
+      },
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
+  },
 };
 
 export const response = {
