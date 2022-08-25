@@ -21,7 +21,8 @@
       </thead>
       <tbody>
 
-        <tr *ngFor="let user of users">
+        <tr *ngFor="let user of users; let i = index">
+          <td>{{ i }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.contact }}</td>
           <td>{{ user.email }}</td>

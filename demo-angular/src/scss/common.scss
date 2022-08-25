@@ -1,0 +1,63 @@
+@import "variables.scss";
+
+body {
+  background-color: $dark-primary;
+  color: $font-light-primary;
+}
+
+// for icons
+i {
+  color: $font-light-primary;
+}
+
+// table theme
+.table {
+  tr, td {
+    color: $font-light-primary;
+    a {
+      color: $font-light-primary;
+    }
+  }
+}
+
+.container {
+  height: 90vh;
+}
+
+.modal-content {
+  border: 1px solid white;
+  background-color: darkslateblue !important;
+}
+
+input {
+  background: gray;
+  color: white;
+  border: none;
+}
+
+.text-danger {
+  color: #ffbdbd !important;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: lightgray;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: lightgray;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: lightgray;
+}
+
+// .table-container {
+//   table {
+//     tr, th {
+//       td {
+//         padding: 4px 7px;
+//       }
+//     }
+//   }
+// }

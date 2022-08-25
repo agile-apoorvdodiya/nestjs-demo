@@ -6,9 +6,9 @@ import { UsersComponent } from './users.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UploadComponent } from './upload/upload.component';
-
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 @NgModule({
   declarations: [UsersComponent, EditUserComponent, UploadComponent],
   imports: [CommonModule, ReactiveFormsModule, UsersRoutingModule],
 })
-export class UsersModule {}
+export class UsersModule { }

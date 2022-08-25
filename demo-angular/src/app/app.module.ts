@@ -12,6 +12,7 @@ import { ChatWindowComponent } from './components/chat-window/chat-window.compon
 import { AddRoomComponent } from './components/add-room/add-room.component';
 import { RoomWindowComponent } from './components/room-window/room-window.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +31,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
       },
     }),
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,

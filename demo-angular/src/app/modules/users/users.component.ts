@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { fadeRow } from 'src/animations/table';
 import { IUser, UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-users',
+  animations: [fadeRow],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
   users: IUser[] = [];
   uploadURL = environment.uploadAPIUrl;
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
     this.getAllUsers();
@@ -22,7 +24,7 @@ export class UsersComponent implements OnInit {
       (res: any) => {
         this.users = res?.data;
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
