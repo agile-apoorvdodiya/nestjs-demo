@@ -17,12 +17,13 @@ export interface IChatUser {
 })
 export class ChatComponent implements OnInit {
   onlineUsers: IChatUser[] = [];
-  drawerOpen = true;
+  drawerOpen = false;
   currentUserDetails: IUser = {};
   chatWindow: any[] = [];
   roomChatWindow: any[] = [];
   rooms: any[] = [];
   createRoomModal = false;
+  
   constructor(
     private socketService: SocketService,
     private userService: UserService

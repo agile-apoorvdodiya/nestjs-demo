@@ -60,7 +60,7 @@ export class EditUserComponent implements OnInit {
     this.userId = id;
     this.userService.getUserById(this.userId).subscribe(
       (res: any) => {
-        (this.userForm as FormGroup).patchValue(res.user);
+        (this.userForm as FormGroup).patchValue(res.data);
       },
       (err) => {}
     );

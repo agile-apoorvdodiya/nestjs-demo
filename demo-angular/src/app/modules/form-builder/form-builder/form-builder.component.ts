@@ -23,7 +23,7 @@ export class FormBuilderComponent implements OnInit {
 
   getAllForms() {
     this.formBuilderService.getAllForms().subscribe((res: any) => {
-      this.forms = res.forms || [];
+      this.forms = res.data || [];
     });
   }
 

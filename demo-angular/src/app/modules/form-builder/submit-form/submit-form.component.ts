@@ -32,7 +32,7 @@ export class SubmitFormComponent implements OnInit {
 
   getForm() {
     this.formBuilderService.getForm(this.formId).subscribe((res: any) => {
-      this.data = res.form;
+      this.data = res.data;
       this.createForm();
     });
   }

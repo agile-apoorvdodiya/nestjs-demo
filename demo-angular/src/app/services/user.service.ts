@@ -35,8 +35,8 @@ export class UserService {
   login(data: IUser) {
     return this.http.post(`${this.baseUrl}/login`, data).pipe(
       tap((res: any) => {
-        if (res?.success) {
-          localStorage.setItem('u', JSON.stringify(res.user));
+        if (res?.success && res?.data) {
+          localStorage.setItem('u', JSON.stringify(res.data));
           this.isLoggedIn.next(true);
         }
       })

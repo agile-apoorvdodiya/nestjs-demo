@@ -49,7 +49,7 @@ export class AddRoomComponent implements OnInit {
 
   getUsers() {
     this.userService.getAllUsers().subscribe((res: any) => {
-      this.users = res.users;
+      this.users = res.data;
     });
   }
 }

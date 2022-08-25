@@ -225,7 +225,7 @@ export class CreateFormComponent implements OnInit {
   getFormData() {
     this.formBuilderService.getForm(this.formId).subscribe(
       (res: any) => {
-        this.createFormFromValue(res.form);
+        this.createFormFromValue(res.data);
       },
       (err) => {
         Swal.fire({
