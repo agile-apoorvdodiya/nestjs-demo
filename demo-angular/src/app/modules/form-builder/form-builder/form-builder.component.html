@@ -17,7 +17,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let form of forms; let i = index">
+        <tr *ngFor="let form of forms; let i = index" [@fadeRow]="{ value: '', params: { delay: (50 * i) +'ms' }}">
           <td>{{form.title}}</td>
           <td><a href="{{'http://localhost:4200/form-builder/submit/' + form._id }}" target="_blank"
               rel="noopener noreferrer">

@@ -21,7 +21,7 @@
       </thead>
       <tbody>
 
-        <tr *ngFor="let user of users; let i = index">
+        <tr *ngFor="let user of users; let i = index" [@fadeRow]="{ value: '', params: { delay: (50 * i) +'ms' }}">
           <td>{{ i }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.contact }}</td>
@@ -37,7 +37,8 @@
           </td>
 
           <td class="text-center">
-            <button title="Upload Document" class="btn btn-sm me-2 text-light" (click)="uploadUserHandler(user?._id || '')">
+            <button title="Upload Document" class="btn btn-sm me-2 text-light"
+              (click)="uploadUserHandler(user?._id || '')">
               <i class="fa fa-file"></i>
             </button>
             <button title="Delete User" class="btn btn-sm me-2 text-light" (click)="deleteHandler(user?._id || '')">

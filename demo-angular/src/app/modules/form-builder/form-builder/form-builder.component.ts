@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { fadeRow } from 'src/animations/table';
 import {
   FormBuilderService,
   IForm,
@@ -9,6 +10,7 @@ import Swal from 'sweetalert2';
   selector: 'app-form-builder',
   templateUrl: './form-builder.component.html',
   styleUrls: ['./form-builder.component.scss'],
+  animations: [fadeRow]
 })
 export class FormBuilderComponent implements OnInit {
   forms: IForm[] = [];

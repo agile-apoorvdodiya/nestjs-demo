@@ -2,9 +2,11 @@ import { animate, keyframes, state, style, transition, trigger } from "@angular/
 
 export const fadeRow = [
   trigger('fadeRow', [
-    transition('void => *', [
-      style({ opacity: 0 }),
-      animate(`500ms {{index}}ms`, style({ opacity: 1 }))
-    ], { params: { index: 1000 } })
+    state('void', style({ opacity: 0 })),
+    transition(':enter', [
+      animate('{{duration}} {{delay}}')
+    ], {
+      params: { delay: '0ms', duration: '100ms' }
+    }),
   ])
 ]
