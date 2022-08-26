@@ -19,9 +19,8 @@
       <tbody>
         <tr *ngFor="let form of forms; let i = index" [@fadeRow]="{ value: '', params: { delay: (50 * i) +'ms' }}">
           <td>{{form.title}}</td>
-          <td><a href="{{'http://localhost:4200/form-builder/submit/' + form._id }}" target="_blank"
-              rel="noopener noreferrer">
-              {{'http://localhost:4200/form-builder/submit/' + form._id }}</a></td>
+          <td><a href="{{hostname + '/form-builder/submit/' + form._id }}" target="_blank" rel="noopener noreferrer">
+              {{hostname + '/form-builder/submit/' + form._id }}</a></td>
           <td class="text-center">
             <button class="btn btn-sm text-light" (click)="viewModal(i)"><i class="fa fa-eye"></i></button>
             <button class="btn btn-sm text-light" [routerLink]="['edit', form._id]"><i

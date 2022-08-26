@@ -16,7 +16,9 @@ export class FormBuilderComponent implements OnInit {
   forms: IForm[] = [];
   selectedForm: any | IForm = null;
   viewForm = false;
-
+  hostname = location.hostname === 'localhost' ?
+  `${location.protocol}/${location.host}` : 
+  `${location.protocol}/${location.hostname}`;
   constructor(private formBuilderService: FormBuilderService) {}
 
   ngOnInit(): void {
