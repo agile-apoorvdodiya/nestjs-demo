@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { FormBuilderService } from './form-builder.service';
 import { FormBuilderController } from './form-builder.controller';
 import mongoose from 'mongoose';
-import { FormBuilderSchema } from './schema/form';
+import { FormBuilderSchema, FormSubmissionSchema } from './schema/form';
 
 @Module({
   providers: [
@@ -22,7 +22,7 @@ import { FormBuilderSchema } from './schema/form';
     {
       provide: 'FormSubmitModel',
       useFactory: (connection: mongoose.Connection) =>
-        connection.model('FormSubmitModel', FormBuilderSchema),
+        connection.model('FormSubmitModel', FormSubmissionSchema),
       inject: ['DB_CONNECTION'],
     },
   ],

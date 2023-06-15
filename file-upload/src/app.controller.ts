@@ -76,7 +76,7 @@ export class AppController {
       success: true,
       message: 'file uploaded successfully.',
       file,
-      data: response.data,
+      data: response?.data,
     };
   }
 }

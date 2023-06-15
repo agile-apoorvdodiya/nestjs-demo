@@ -23,3 +23,14 @@ export const FormBuilderSchema = new Schema(
     collection: 'form-builder',
   },
 );
+
+export const FormSubmissionSchema = new Schema(
+  {
+    id: String,
+    title: String,
+    form: [Schema.Types.Mixed]
+  },
+  {
+    collection: 'form-submissions'
+  }
+)
