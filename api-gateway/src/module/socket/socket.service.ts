@@ -14,7 +14,7 @@ export class SocketService {
     try {
       if (
         (message?.room && message?.message && message?.sender) ||
-        (message?.room && message?.sender && message?.receiver)
+        (!message?.room && message?.sender && message?.receiver)
       ) {
         const res = await this.messageModel.create({
           sender: message.sender,
@@ -48,6 +48,7 @@ export class SocketService {
 
   async getMessagesById(sender: string, receiver: string) {
     try {
+      console.log(sender, receiver)
       if (sender && receiver) {
         return await this.messageModel.find({
           $or: [

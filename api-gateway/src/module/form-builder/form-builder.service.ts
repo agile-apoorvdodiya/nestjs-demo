@@ -55,10 +55,6 @@ export class FormBuilderService {
 
   async deleteFormById(id: string) {
     try {
-      const form = await this.formSubmitModel.findById(id);
-
-      if (!form) throw httpErrors.notFound('Form not found');
-
       const deleteForm = await this.formBuilderModel.deleteOne({ _id: id });
       if (deleteForm.deletedCount) {
         return response.single('form deleted successfully!');
